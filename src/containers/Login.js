@@ -1,7 +1,7 @@
 import React from 'react'
 import firebase from 'firebase/app'
 import { withRouter } from 'react-static'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 
 class LoginPage extends React.Component {
   state = {
@@ -22,23 +22,23 @@ class LoginPage extends React.Component {
       loading: true
     })
     const provider = new firebase.auth.GoogleAuthProvider()
-
-    try {
-      firebase.auth().signInWithRedirect(provider)
-    } catch (error) {
-      // Handle Error here.
-      const errorCode = error.code
-      const errorMessage = error.message
-      // The email of the user's account used.
-      // const email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      // const credential = error.credential;
-
-      console.log(`${errorCode}: ${errorMessage}`)
-      this.setState({
-        loading: false
+    firebase
+      .auth()
+      .signInWithRedirect(provider)
+      .then(resp => {
+        console.log('hi2')
       })
-    }
+      .catch(err => {
+        const errorCode = err.code
+        const errorMessage = err.message
+
+        console.log(`${errorCode}: ${errorMessage}`)
+        message.error(<small>{`Authentication Failed (${errorCode})`}</small>)
+
+        this.setState({
+          loading: false
+        })
+      })
   }
 
   render() {
