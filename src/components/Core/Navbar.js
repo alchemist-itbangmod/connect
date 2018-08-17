@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Icon } from 'antd'
+import { Link } from 'react-static'
 
 const Container = styled.nav`
   position: fixed;
@@ -31,22 +32,30 @@ const Menu = styled.div`
 
 const Navbar = () => (
   <Container>
-    <Menu>
-      <Icon className="icon" type="user" />
-      Home
-    </Menu>
-    <Menu>
-      <Icon className="icon" type="book" />
-      Daily Hunt
-    </Menu>
-    <Menu>
-      <Icon className="icon" type="qrcode" />
-      Scan
-    </Menu>
-    <Menu>
-      <Icon className="icon" type="usergroup-add" />
-      Friends
-    </Menu>
+    <Link to="/">
+      <Menu>
+        <Icon className="icon" type="user" />
+        Home
+      </Menu>
+    </Link>
+    <Link to="/daily-hunt">
+      <Menu>
+        <Icon className="icon" type="book" />
+        Daily Hunt
+      </Menu>
+    </Link>
+    <Link to="/add">
+      <Menu>
+        <Icon className="icon" type="qrcode" />
+        Add
+      </Menu>
+    </Link>
+    <Link to="/friends">
+      <Menu>
+        <Icon className="icon" type="usergroup-add" />
+        Friends
+      </Menu>
+    </Link>
   </Container>
 )
 
