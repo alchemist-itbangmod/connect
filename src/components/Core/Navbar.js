@@ -52,7 +52,7 @@ const Navbar = () => (
     </Link>
     <Link to="/friends">
       <Menu>
-        <Icon className="icon" type="usergroup-add" />
+        <Icon className="icon" type="profile" />
         Friends
       </Menu>
     </Link>

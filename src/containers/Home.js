@@ -1,16 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Layout from '../components/Core/Layout'
+import { connect } from 'react-redux'
 
+import Section from '../components/Core/Section'
+import Layout from '../components/Core/Layout'
 import EditProfileButton from '../components/Home/EditProfileButton'
 import LogoutButton from '../components/Home/LogoutButton'
-import { Avatar } from 'antd'
 import Profile from '../components/Home/Profile'
-
-const Section = styled.section`
-  background: white;
-  position: relative;
-`
 
 const ActionContainer = styled.div`
   position: absolute;
@@ -28,19 +24,20 @@ class Home extends React.Component {
   }
 
   render() {
+    const { userInfo } = this.props
     return (
       <Layout>
-        <Section id="profile" className="py-3">
+        <Section id="profile">
           <div className="container text-center pt-5 position-relative">
             <ActionContainer>
               <EditProfileButton />
               <LogoutButton />
             </ActionContainer>
             <Profile
-              name={`Kanisorn Sutham`}
-              nickName={`เฟิส`}
-              level={`4`}
-              stdID={`58130500009`}
+              name={userInfo.name}
+              nickName={userInfo.nickName}
+              level={userInfo.level}
+              stdID={userInfo.stdID}
             />
           </div>
         </Section>
@@ -49,4 +46,9 @@ class Home extends React.Component {
   }
 }
 
-export default Home
+export default connect(
+  state => ({
+    userInfo: state.user.userInfo
+  }),
+  null
+)(Home)
