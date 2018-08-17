@@ -1,0 +1,8 @@
+@import '~antd/dist/antd.css';
+
+#root,
+body,
+html {
+  min-height: 100%;
+  height: 100%;
+}

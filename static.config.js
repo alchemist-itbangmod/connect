@@ -38,7 +38,7 @@ export default {
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossOrigin="anonymous"
             />
-            <title>SeeUChula Application</title>
+            <title>Connect</title>
             {renderMeta.styleTags}
           </Head>
           <Body>{children}</Body>

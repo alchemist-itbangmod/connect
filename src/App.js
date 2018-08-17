@@ -6,6 +6,8 @@ import { hot } from 'react-hot-loader'
 import NotFound from './containers/404'
 import Login from './containers/Login'
 
+import './App.css'
+
 injectGlobal`
   body {
     font-family: 'Rubik', 'Kanit', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
