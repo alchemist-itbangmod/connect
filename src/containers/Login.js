@@ -1,13 +1,11 @@
 import React from 'react'
-import Layout from '../components/Core/Layout'
-import { Button } from 'antd'
+import GoogleLoginButton from '../components/Login/GoogleLoginButton'
 
 const LoginPage = () => (
-  <Layout>
-    <div className="container h-100 d-flex justify-content-center align-items-center">
-      <Button size="large">Login with Google</Button>
-    </div>
-  </Layout>
+  <div className="container h-100 d-flex justify-content-center align-items-center flex-column">
+    <p className="small">Please Login with your KMUTT Email, Let's enjoy!</p>
+    <GoogleLoginButton />
+  </div>
 )
 
 export default LoginPage
