@@ -22,17 +22,21 @@ export const queryUser = query =>
       return users
     })
 
-export const getUser = uid =>
-  firestore
+export const getUser = async uid => {
+  const user = await firestore
     .doc(`users/${uid}`)
     .get()
     .then(returnDocOrNull)
 
+  const color = await getUserColor(user)
+
+  return {
+    ...user,
+    color
+  }
+}
+
 export const setUser = (uid, data = {}) =>
   firestore.doc(`users/${uid}`).set(data, { merge: true })
 
-export const getUserColor = user =>
-  user
-    .color()
-    .get()
-    .then(returnDocOrNull)
+export const getUserColor = user => user.color.get().then(returnDocOrNull)

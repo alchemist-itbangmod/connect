@@ -3,6 +3,12 @@ import { Router, Switch, Route, withRouter } from 'react-static'
 import { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
 import firebase from 'firebase/app'
+import { connect } from 'react-redux'
+import * as R from 'ramda'
+
+// Internal Libs
+import './libs/initFirebase'
+import './App.css'
 
 import NotFound from './containers/404'
 import Login from './containers/Login'
@@ -12,12 +18,10 @@ import Add from './containers/Add'
 import Friends from './containers/Friends'
 import Identify from './containers/Identify'
 
-import './App.css'
-
-// [1] Initial Firebase
-import './libs/initFirebase'
 import { setUserData, createOtpForUserIfNotExist } from './firebase/login'
 import { getUser } from './firebase/data'
+
+import { actions as userActions } from './redux/modules/user'
 
 injectGlobal`
   body {
@@ -55,12 +59,13 @@ class App extends React.Component {
     const user = await getUser(authUser.uid)
     if (user !== null) {
       console.log('already registration')
-      console.log(user)
+      this.props.setUser(user)
     } else {
       console.log('not registration')
-      console.log(user)
       await setUserData(authUser)
       await createOtpForUserIfNotExist(authUser)
+      const user = await getUser(authUser.uid)
+      this.props.setUser(user)
     }
   }
 
@@ -89,4 +94,13 @@ class App extends React.Component {
   }
 }
 
-export default hot(module)(withRouter(App))
+export default R.compose(
+  hot(module),
+  withRouter,
+  connect(
+    null,
+    {
+      setUser: userActions.setUser
+    }
+  )
+)(App)

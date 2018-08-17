@@ -5,7 +5,7 @@ const userAction = actionCreator('user')
 const SET_USER = userAction('SET_USER')
 
 const initState = {
-  user: null
+  userInfo: null
 }
 
 export default (state = initState, action) => {
@@ -13,7 +13,7 @@ export default (state = initState, action) => {
     case SET_USER: {
       return {
         ...state,
-        user: action.payload
+        userInfo: action.payload
       }
     }
 
