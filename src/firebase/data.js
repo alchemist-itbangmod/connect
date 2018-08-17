@@ -37,6 +37,31 @@ export const getUser = async uid => {
 }
 
 export const setUser = (uid, data = {}) =>
-  firestore.doc(`users/${uid}`).set(data, { merge: true })
+  firestore.doc(`users/${uid}`).set(
+    {
+      ...data,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    },
+    { merge: true }
+  )
 
 export const getUserColor = user => user.color.get().then(returnDocOrNull)
+
+// Friends Method
+export const getFriends = uid => {
+  firestore
+    .collection(`friends`)
+    .where('RelatingUserID', '=', uid)
+    .get()
+    .then(
+      snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
+    )
+}
+
+export const setFriends = (userUid, friendUid) => {
+  firestore.collection(`friends`).add({
+    RelatingUserID: `user/${userUid}`,
+    RelatedUserID: `user/${friendUid}`,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+}
