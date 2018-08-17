@@ -5,6 +5,7 @@ import Layout from '../components/Core/Layout'
 import EditProfileButton from '../components/Home/EditProfileButton'
 import LogoutButton from '../components/Home/LogoutButton'
 import { Avatar } from 'antd'
+import Profile from '../components/Home/Profile'
 
 const Section = styled.section`
   background: white;
@@ -35,10 +36,12 @@ class Home extends React.Component {
               <EditProfileButton />
               <LogoutButton />
             </ActionContainer>
-            <Avatar size={64} icon="user" />
-            <p className="small mb-0 mt-2">{`รหัสนักศึกษา: 58130500009`}</p>
-            <h2 className="mb-1">{`Kanisorn Sutham`}</h2>
-            <p>{`ชั้นปี: 4`}</p>
+            <Profile
+              name={`Kanisorn Sutham`}
+              nickName={`เฟิส`}
+              level={`4`}
+              stdID={`58130500009`}
+            />
           </div>
         </Section>
       </Layout>
