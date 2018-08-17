@@ -1,20 +1,23 @@
 import React from 'react'
-import { Router, Switch, Route } from 'react-static'
+import { Router, Switch, Route, withRouter } from 'react-static'
 import { injectGlobal } from 'styled-components'
 import { hot } from 'react-hot-loader'
 import firebase from 'firebase/app'
-import Promise from 'bluebird'
+
 import NotFound from './containers/404'
 import Login from './containers/Login'
 import Home from './containers/Home'
 import DailyHunt from './containers/DailyHunt'
 import Add from './containers/Add'
 import Friends from './containers/Friends'
+import Identify from './containers/Identify'
 
 import './App.css'
 
 // [1] Initial Firebase
 import './libs/initFirebase'
+import { setUserData, createOtpForUserIfNotExist } from './firebase/login'
+import { getUser } from './firebase/data'
 
 injectGlobal`
   body {
@@ -29,45 +32,51 @@ injectGlobal`
 
 class App extends React.Component {
   state = {
-    loading: true,
-    user: {}
+    loading: true
   }
 
   componentDidMount() {
-    const userPromise = new Promise(resolve => {
-      firebase.auth().onAuthStateChanged(() => {
-        resolve()
-      })
-    })
-
-    Promise.all([userPromise, Promise.delay(500)]).then(() => {
-      this.setState({
-        loading: false
-      })
-    })
-
-    firebase.auth().onAuthStateChanged(authUser => {
+    firebase.auth().onAuthStateChanged(async authUser => {
       if (authUser) {
-        // console.log(authUser)
-        this.setState({
-          user: authUser
+        await this.handleLoggedIn(authUser)
+        await this.setState({
+          loading: false
         })
       } else {
-        this.setState({
-          user: {}
+        await this.props.history.push('/login')
+        await this.setState({
+          loading: false
         })
       }
     })
   }
 
+  handleLoggedIn = async authUser => {
+    const user = await getUser(authUser.uid)
+    if (user !== null) {
+      console.log('already registration')
+      console.log(user)
+    } else {
+      console.log('not registration')
+      console.log(user)
+      await setUserData(authUser)
+      await createOtpForUserIfNotExist(authUser)
+    }
+  }
+
+  handleNonLoggedIn() {
+    this.setState({ authUser: null })
+  }
+
   render() {
     return (
-      <Router>
+      <React.Fragment>
         {this.state.loading ? (
           <div>Loading</div>
         ) : (
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/identify" component={Identify} />
             <Route exact path="/" component={Home} />
             <Route exact path="/daily-hunt" component={DailyHunt} />
             <Route exact path="/add" component={Add} />
@@ -75,9 +84,9 @@ class App extends React.Component {
             <Route component={NotFound} />
           </Switch>
         )}
-      </Router>
+      </React.Fragment>
     )
   }
 }
 
-export default hot(module)(App)
+export default hot(module)(withRouter(App))
