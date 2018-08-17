@@ -22,6 +22,7 @@ import { setUserData, createOtpForUserIfNotExist } from './firebase/login'
 import { getUser } from './firebase/data'
 
 import { actions as userActions } from './redux/modules/user'
+import Loading from './components/Core/Loading'
 
 injectGlobal`
   body {
@@ -31,6 +32,7 @@ injectGlobal`
     font-size: 14px;
     margin: 0;
     padding: 0;
+    background: #dfeae9;
   }
 `
 
@@ -77,7 +79,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         {this.state.loading ? (
-          <div>Loading</div>
+          <Loading />
         ) : (
           <Switch>
             <Route exact path="/login" component={Login} />
