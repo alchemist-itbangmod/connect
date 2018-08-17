@@ -15,11 +15,11 @@ const Container = styled.nav`
 `
 
 const Menu = styled.div`
-  color: #663399;
+  color: #307375;
   font-size: 0.70711rem;
   letter-spacing: 0.0075rem;
   line-height: 1;
-  padding: 0.2625rem 1.05rem 0.525rem;
+  padding: 0.525rem 1.05rem;
   text-decoration: none;
   text-align: center;
 
