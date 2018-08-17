@@ -28,8 +28,14 @@ class Add extends React.Component {
   handleError = (err) => {
     console.log(err)
   }
+  handleChange = (event) => {
+    this.handleScan(event.target.value)
+  }
+  submitOtp = () => {
+    console.log(this.state)
+  }
   render() {
-    const { cameraOpen } = this.state
+    const { cameraOpen, otp } = this.state
     return (
       <Layout>
         <Section id="mode">
@@ -62,7 +68,6 @@ class Add extends React.Component {
                       delay={300}
                       onError={this.handleError}
                       onScan={this.handleScan}
-                      style={{ width: '100%' }}
                     />
                 }
               </div>
@@ -74,10 +79,10 @@ class Add extends React.Component {
             <div className="row">
               <div className="col-12">
                 <label htmlFor="">ช่องกรอกรหัสลับ</label>
-                <Input className="text-center" />
+                <Input className="text-center" onChange={this.handleChange} value={otp} />
               </div>
               <div className="col-12 mt-2">
-                <Button type="dashed">
+                <Button type="dashed" onClick={this.submitOtp} >
                   <Icon type="api" />
                   ยืนยันรหัสลับ
                 </Button>
