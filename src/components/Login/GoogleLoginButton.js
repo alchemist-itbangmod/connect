@@ -1,13 +1,15 @@
 import React from 'react'
+import { withRouter } from 'react-static'
 import { Button } from 'antd'
 import firebase from 'firebase/app'
 
-export default class GoogleLoginButton extends React.Component {
+class GoogleLoginButton extends React.Component {
   login = () => {
     const provider = new firebase.auth.GoogleAuthProvider()
 
     try {
       firebase.auth().signInWithRedirect(provider)
+      this.props.history.push('/identify')
     } catch (error) {
       // Handle Error here.
       const errorCode = error.code
@@ -29,3 +31,5 @@ export default class GoogleLoginButton extends React.Component {
     )
   }
 }
+
+export default withRouter(GoogleLoginButton)
