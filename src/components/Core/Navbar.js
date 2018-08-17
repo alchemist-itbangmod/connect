@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Icon } from 'antd'
-import { Link } from 'react-static'
+import { NavLink } from 'react-static'
 
 const Container = styled.nav`
   position: fixed;
@@ -14,7 +14,7 @@ const Container = styled.nav`
   background: #fbfafc;
 `
 
-const Menu = styled.div`
+const Menu = styled(NavLink)`
   color: #307375;
   font-size: 0.70711rem;
   letter-spacing: 0.0075rem;
@@ -22,6 +22,13 @@ const Menu = styled.div`
   padding: 0.525rem 1.05rem;
   text-decoration: none;
   text-align: center;
+  transition: all 0.3s;
+
+  // Active Mode
+  opacity: 0.4;
+  &.active {
+    opacity: 1;
+  }
 
   .icon {
     height: 32px;
@@ -32,30 +39,22 @@ const Menu = styled.div`
 
 const Navbar = () => (
   <Container>
-    <Link to="/">
-      <Menu>
-        <Icon className="icon" type="user" />
-        Home
-      </Menu>
-    </Link>
-    <Link to="/daily-hunt">
-      <Menu>
-        <Icon className="icon" type="book" />
-        Daily Hunt
-      </Menu>
-    </Link>
-    <Link to="/add">
-      <Menu>
-        <Icon className="icon" type="qrcode" />
-        Add
-      </Menu>
-    </Link>
-    <Link to="/friends">
-      <Menu>
-        <Icon className="icon" type="profile" />
-        Friends
-      </Menu>
-    </Link>
+    <Menu to="/" exact>
+      <Icon className="icon" type="user" />
+      Home
+    </Menu>
+    <Menu to="/daily-hunt">
+      <Icon className="icon" type="book" />
+      Daily Hunt
+    </Menu>
+    <Menu to="/add">
+      <Icon className="icon" type="qrcode" />
+      Add
+    </Menu>
+    <Menu to="/friends">
+      <Icon className="icon" type="profile" />
+      Friends
+    </Menu>
   </Container>
 )
 
