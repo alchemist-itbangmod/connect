@@ -6,8 +6,8 @@ firestore.settings({ timestampsInSnapshots: true })
 // Utils Functions
 const returnDocOrNull = doc => (doc.exists ? doc.data() : null)
 
-function getDataFromSnapshotQuery(snapshot) {
-  return snapshot.docs.map(doc => Object.assign({ id: doc.id }, doc.data()))
+const getDataFromSnapshotQuery = snapshot => {
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
 // User Method
@@ -29,15 +29,12 @@ export const getUser = async uid => {
     .then(returnDocOrNull)
 
   if (user !== null) {
-    const color = await getUserColor(user)
-
+    const color = await user.color.get().then(returnDocOrNull)
     return {
       ...user,
       color
     }
-  } else {
-    return null
-  }
+  } else return null
 }
 
 export const setUser = (uid, data = {}) =>
@@ -52,20 +49,30 @@ export const setUser = (uid, data = {}) =>
 export const getUserColor = user => user.color.get().then(returnDocOrNull)
 
 // Friends Method
-export const getFriends = uid => {
-  firestore
+export const getFriends = async uid => {
+  let friends = await firestore
     .collection(`friends`)
-    .where('RelatingUserID', '=', uid)
+    .where('RelatingUserUID', '==', uid)
     .get()
     .then(
       snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
     )
+
+  const friendList = await Promise.all(
+    friends.map(async friend => {
+      const user = await getUser(friend.RelatedUserUID)
+      return user
+    })
+  ).then(res => {
+    return res
+  })
+
+  return friendList
 }
 
-export const setFriends = (userUid, friendUid) => {
+export const setFriends = (userUid, friendUid) =>
   firestore.collection(`friends`).add({
-    RelatingUserID: `user/${userUid}`,
-    RelatedUserID: `user/${friendUid}`,
+    RelatingUserUID: userUid,
+    RelatedUserUID: friendUid,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
-}
