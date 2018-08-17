@@ -3,15 +3,15 @@ import styled from 'styled-components'
 import Navbar from './Navbar'
 
 const Container = styled.div`
-  height: 100%;
   min-height: 100%;
+  padding-bottom: 60px;
 `
 
 const Layout = ({ children }) => (
-  <Container>
-    {children}
+  <React.Fragment>
+    <Container>{children}</Container>
     <Navbar />
-  </Container>
+  </React.Fragment>
 )
 
 export default Layout

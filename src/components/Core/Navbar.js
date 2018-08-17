@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon } from 'antd'
+import { Icon, Badge } from 'antd'
 import { NavLink } from 'react-static'
 
 const Container = styled.nav`
@@ -22,6 +22,7 @@ const Menu = styled(NavLink)`
   padding: 0.525rem 1.05rem;
   text-decoration: none;
   text-align: center;
+  position: relative;
   transition: all 0.3s;
 
   // Active Mode
@@ -52,7 +53,7 @@ const Navbar = () => (
       Add
     </Menu>
     <Menu to="/friends">
-      <Icon className="icon" type="profile" />
+    <Icon className="icon" type="profile" />
       Friends
     </Menu>
   </Container>

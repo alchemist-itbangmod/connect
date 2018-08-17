@@ -28,11 +28,15 @@ export const getUser = async uid => {
     .get()
     .then(returnDocOrNull)
 
-  const color = await getUserColor(user)
+  if (user !== null) {
+    const color = await getUserColor(user)
 
-  return {
-    ...user,
-    color
+    return {
+      ...user,
+      color
+    }
+  } else {
+    return null
   }
 }
 
