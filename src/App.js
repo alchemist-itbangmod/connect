@@ -5,6 +5,7 @@ import { hot } from 'react-hot-loader'
 //
 import NotFound from './containers/404'
 import Login from './containers/Login'
+import Home from './containers/Home'
 
 import './App.css'
 
@@ -23,7 +24,7 @@ const App = () => (
   <Router>
     <Switch>
       <Route exact path="/login" component={Login} />
-      <Route exact path="/" component={Login} />
+      <Route exact path="/" component={Home} />
       <Route component={NotFound} />
     </Switch>
   </Router>
