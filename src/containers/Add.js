@@ -1,9 +1,14 @@
 import React from 'react'
-import QrReader from 'react-qr-reader'
+import styled from 'styled-components'
+import DefaultQrReader from 'react-qr-reader'
 
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import { Button, Input, Icon } from 'antd'
+
+const QrReader = styled(DefaultQrReader)`
+  width: 100%;
+`
 
 class Add extends React.Component {
   state = {
