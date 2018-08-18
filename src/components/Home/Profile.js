@@ -14,6 +14,12 @@ const getYear = year => {
   else return 62 - year
 }
 
+const isAvailableYear = year => year > 61 || year < 57
+
+const isValidSITCode = stdID => stdID.substring(2, 8) === '130500'
+
+const isValidStudentID = stdID => stdID.length !== 11
+
 class Profile extends React.Component {
   state = {
     loading: false,
@@ -30,14 +36,18 @@ class Profile extends React.Component {
       this.state.stdID !== '' &&
       (R.isEmpty(this.props.stdID) || R.isNil(this.props.stdID))
     ) {
-      if (this.state.stdID.length !== 11) {
-        message.error('Your Student ID is not valid')
+      if (isValidStudentID(this.state.stdID)) {
+        message.error('Your Student ID is not valid!')
+        return
+      }
+
+      if (!isValidSITCode(this.state.stdID)) {
+        message.error('You are not IT Student!')
         return
       }
 
       const year = this.state.stdID.substring(0, 2)
-      console.log(year)
-      if (+year > 61 || +year < 57) {
+      if (isAvailableYear(+year)) {
         message.error('Your study level is wrong.')
         return
       }
