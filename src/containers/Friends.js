@@ -5,21 +5,22 @@ import { connect } from 'react-redux'
 import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
-import { getFriends } from '../firebase/data'
+import { getRealtimeFriends } from '../firebase/data'
 class Friends extends React.Component {
   state = {
     friends: []
   }
   async componentDidMount() {
-    console.log(this.props.userInfo.uid)
-    const friends = await getFriends(this.props.userInfo.uid)
-    await this.setState({
-      friends
+    await getRealtimeFriends(this.props.userInfo.uid, friends => {
+      if (friends !== null) {
+        this.setState({
+          friends
+        })
+      }
     })
   }
 
   render() {
-    console.log('state', this.state)
     return (
       <Layout>
         <Section id="mode">
@@ -34,7 +35,6 @@ class Friends extends React.Component {
         <section className="friend-list">
           {this.state.friends.map((friend, index) => (
             <Section id="friend" key={index}>
-              {console.log(friend)}
               <div className="container position-relative d-flex align-items-center">
                 <Avatar size={64} icon="user" />
                 <div className="info ml-2">

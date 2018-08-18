@@ -39,7 +39,6 @@ class Add extends React.Component {
   }
 
   submitOtp = () => {
-    console.log(this.state)
     addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
   }
 

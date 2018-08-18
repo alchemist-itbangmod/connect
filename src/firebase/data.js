@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import * as R from 'ramda'
 
 const firestore = firebase.firestore()
 firestore.settings({ timestampsInSnapshots: true })
@@ -10,6 +11,8 @@ const getDataFromSnapshotQuery = snapshot => {
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
+const userInfoSchema = ['color', 'name', 'nickName', 'level', 'uid', 'bio']
+
 // User Method
 export const queryUsers = query =>
   firestore
@@ -18,7 +21,7 @@ export const queryUsers = query =>
     .get()
     .then(snapshot => {
       let users = []
-      snapshot.forEach(doc => users.push(doc.data()))
+      snapshot.forEach(doc => users.push(R.pick(userInfoSchema, doc.data())))
       return users
     })
 
@@ -52,7 +55,7 @@ export const getFriends = async uid => {
   const friendList = await Promise.all(
     friends.map(async friend => {
       const user = await getUser(friend.friendUID)
-      return user
+      return R.pick(userInfoSchema, user)
     })
   ).then(res => {
     return res
@@ -60,6 +63,26 @@ export const getFriends = async uid => {
 
   return friendList
 }
+
+export const getRealtimeFriends = async (uid, callback) =>
+  firestore
+    .collection(`friends`)
+    .where('userUID', '==', uid)
+    .onSnapshot(async snapshot => {
+      if (snapshot.empty) {
+        callback(null)
+      } else {
+        let friends = getDataFromSnapshotQuery(snapshot)
+        await Promise.all(
+          friends.map(async friend => {
+            const user = await getUser(friend.friendUID)
+            return R.pick(userInfoSchema, user)
+          })
+        ).then(res => {
+          callback(res)
+        })
+      }
+    })
 
 export const getFriend = (userUID, friendUID) =>
   firestore
