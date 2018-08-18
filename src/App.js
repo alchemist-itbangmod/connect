@@ -45,15 +45,12 @@ class App extends React.Component {
     firebase.auth().onAuthStateChanged(async authUser => {
       if (authUser) {
         await this.handleLoggedIn(authUser)
-        await this.setState({
-          loading: false
-        })
       } else {
         await this.props.history.push('/login')
-        await this.setState({
-          loading: false
-        })
       }
+      await this.setState({
+        loading: false
+      })
     })
   }
 
@@ -68,7 +65,7 @@ class App extends React.Component {
       await createOtpForUserIfNotExist(authUser)
     }
     const newUser = await getUser(authUser.uid)
-    this.props.setUser(newUser)
+    await this.props.setUser(newUser)
     await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
   }
 
