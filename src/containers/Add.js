@@ -1,5 +1,11 @@
 import React from 'react'
+<<<<<<< HEAD
 import { Button, Input, Icon } from 'antd'
+=======
+import styled from 'styled-components'
+import DefaultQrReader from 'react-qr-reader'
+import { Button, Input, Icon, message } from 'antd'
+>>>>>>> add message state for adding friends
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
@@ -28,8 +34,12 @@ class Add extends React.Component {
     this.handleScan(event.target.value)
   }
 
-  submitOtp = () => {
-    addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+  submitOtp = async () => {
+    message.loading('Adding...')
+    await addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+    this.setState({
+      otp: ''
+    })
   }
 
   render() {
