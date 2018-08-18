@@ -128,6 +128,7 @@ class DailyHunt extends React.Component {
         <Modal
           visible={this.state.visible}
           onCancel={this.handleCancel}
+          footer={null}
         >
           <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
           <Scanner onScan={this.handleScan} />
