@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import DefaultQrReader from 'react-qr-reader'
-import { Button, Input, Icon } from 'antd'
+import { Button, Input, Icon, message } from 'antd'
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
@@ -37,8 +37,12 @@ class Add extends React.Component {
     this.handleScan(event.target.value)
   }
 
-  submitOtp = () => {
-    addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+  submitOtp = async () => {
+    message.loading('Adding...')
+    await addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+    this.setState({
+      otp: ''
+    })
   }
 
   render() {
@@ -93,7 +97,7 @@ class Add extends React.Component {
                 />
               </div>
               <div className="col-12 mt-2">
-                <Button type="dashed" onClick={this.submitOtp}>
+                <Button type="dashed" onClick={() => this.submitOtp()}>
                   <Icon type="api" />
                   ยืนยันรหัสลับ
                 </Button>
