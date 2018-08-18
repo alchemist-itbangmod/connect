@@ -48,6 +48,7 @@ class Home extends React.Component {
               level={userInfo.level}
               stdID={userInfo.stdID}
               avatarUrl={this.props.avatarUrl}
+              bio={userInfo.bio}
             />
           </div>
         </Section>
