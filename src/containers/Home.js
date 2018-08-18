@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import QRCode from 'qrcode.react'
 
 import Section from '../components/Core/Section'
 import Layout from '../components/Core/Layout'
@@ -39,6 +40,18 @@ class Home extends React.Component {
               level={userInfo.level}
               stdID={userInfo.stdID}
             />
+          </div>
+        </Section>
+        <Section id="otp">
+          <div className="container text-center position-relative">
+            <QRCode
+              value={this.props.userInfo.otp || '-'}
+              style={{ height: 'auto', width: '100%', maxWidth: '180px' }}
+            />
+            <h6 className="m-0">
+              <span className="small">รหัสลับของคุณ (OTP) คือ </span>
+              <u>{this.props.userInfo.otp || '-'}</u>
+            </h6>
           </div>
         </Section>
       </Layout>

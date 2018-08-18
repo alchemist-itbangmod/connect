@@ -53,8 +53,8 @@ const Navbar = () => (
       Add
     </Menu>
     <Menu to="/friends">
-    <Icon className="icon" type="profile" />
-      Friends
+      <Icon className="icon" type="profile" />
+      List
     </Menu>
   </Container>
 )

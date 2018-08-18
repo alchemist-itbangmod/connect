@@ -19,7 +19,7 @@ import Friends from './containers/Friends'
 import Identify from './containers/Identify'
 
 import { setUserData, createOtpForUserIfNotExist } from './firebase/login'
-import { getUser } from './firebase/data'
+import { getUser, getRealtimeUser } from './firebase/data'
 
 import { actions as userActions } from './redux/modules/user'
 import Loading from './components/Core/Loading'
@@ -62,15 +62,14 @@ class App extends React.Component {
     if (user !== null) {
       console.log('already registration')
       await createOtpForUserIfNotExist(authUser)
-      const user = await getUser(authUser.uid)
-      this.props.setUser(user)
     } else {
       console.log('not registration')
       await setUserData(authUser)
       await createOtpForUserIfNotExist(authUser)
-      const user = await getUser(authUser.uid)
-      this.props.setUser(user)
     }
+    const newUser = await getUser(authUser.uid)
+    this.props.setUser(newUser)
+    await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
   }
 
   handleNonLoggedIn() {

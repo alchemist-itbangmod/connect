@@ -16,6 +16,7 @@
     "axios": "^0.16.2",
     "bluebird": "^3.5.1",
     "firebase": "^5.4.0",
+    "qrcode.react": "^0.8.0",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

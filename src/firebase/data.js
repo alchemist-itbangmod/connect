@@ -31,6 +31,17 @@ export const getUser = uid =>
     .get()
     .then(returnDocOrNull)
 
+export const getRealtimeUser = (uid, callback) =>
+  firestore.doc(`users/${uid}`).onSnapshot(async snapshot => {
+    if (snapshot.empty) {
+      callback(null)
+    } else {
+      const user = snapshot.data()
+      console.log('get realtime', user)
+      callback(user)
+    }
+  })
+
 export const setUser = (uid, data = {}) =>
   firestore.doc(`users/${uid}`).set(
     {
@@ -39,8 +50,6 @@ export const setUser = (uid, data = {}) =>
     },
     { merge: true }
   )
-
-export const getUserColor = user => user.color.get().then(returnDocOrNull)
 
 // Friends Method
 export const getFriends = async uid => {
