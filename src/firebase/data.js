@@ -37,7 +37,6 @@ export const getRealtimeUser = (uid, callback) =>
       callback(null)
     } else {
       const user = snapshot.data()
-      console.log('get realtime', user)
       callback(user)
     }
   })
