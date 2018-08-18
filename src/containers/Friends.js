@@ -11,13 +11,20 @@ class Friends extends React.Component {
     friends: []
   }
   async componentDidMount() {
+    this.mounted = true
     await getRealtimeFriends(this.props.userInfo.uid, friends => {
-      if (friends !== null) {
-        this.setState({
-          friends
-        })
+      if (this.mounted) {
+        if (friends !== null) {
+          this.setState({
+            friends
+          })
+        }
       }
     })
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
   }
 
   render() {
@@ -36,7 +43,7 @@ class Friends extends React.Component {
           {this.state.friends.map((friend, index) => (
             <Section id="friend" key={index}>
               <div className="container position-relative d-flex align-items-center">
-                <Avatar size={64} icon="user" />
+                <Avatar size={64} icon="user" src={friend.avatarUrl} />
                 <div className="info ml-2">
                   <h4 className="my-0">{friend.nickName || '-'}</h4>
                   <p className="small mb-0">
