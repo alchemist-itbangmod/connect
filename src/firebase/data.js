@@ -116,3 +116,12 @@ export const setFriend = async (userUID, friendUID) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
 }
+
+export const getQuests = (currentDate) =>
+  firestore
+    .collection(`quests`)
+    .where('startDate', '==', currentDate)
+    .get()
+    .then(
+      snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
+    )
