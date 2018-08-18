@@ -25,8 +25,10 @@ class LoginPage extends React.Component {
     firebase
       .auth()
       .signInWithRedirect(provider)
-      .then(resp => {
-        console.log('hi2')
+      .then(() => {
+        this.setState({
+          loading: false
+        })
       })
       .catch(err => {
         const errorCode = err.code

@@ -11,7 +11,15 @@ const getDataFromSnapshotQuery = snapshot => {
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
-const userInfoSchema = ['color', 'name', 'nickName', 'level', 'uid', 'bio']
+const userInfoSchema = [
+  'color',
+  'name',
+  'nickName',
+  'level',
+  'uid',
+  'bio',
+  'stdID'
+]
 
 // User Method
 export const queryUsers = query =>
