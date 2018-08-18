@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import * as R from 'ramda'
+import { getAvatar } from './storage'
 
 const firestore = firebase.firestore()
 firestore.settings({ timestampsInSnapshots: true })
@@ -92,7 +93,8 @@ export const getRealtimeFriends = async (uid, callback) =>
         await Promise.all(
           friends.map(async friend => {
             const user = await getUser(friend.friendUID)
-            return R.pick(userInfoSchema, user)
+            const avatarUrl = await getAvatar(friend.friendUID)
+            return { ...R.pick(userInfoSchema, user), avatarUrl }
           })
         ).then(res => {
           callback(res)
