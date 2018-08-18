@@ -43,7 +43,11 @@ class Friends extends React.Component {
           {this.state.friends.map((friend, index) => (
             <Section id="friend" key={index}>
               <div className="container position-relative d-flex align-items-center">
+<<<<<<< HEAD
                 <Avatar size={64} icon="user" src={friend.avatarUrl || false} />
+=======
+                <Avatar size={64} icon="user" src={friend.avatarUrl} />
+>>>>>>> 492a8d5ec73fa75f026a006902076c1390cda197
                 <div className="info ml-2">
                   <h4 className="my-0">{friend.nickName || '-'}</h4>
                   <p className="small mb-0">
