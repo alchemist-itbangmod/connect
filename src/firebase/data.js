@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import * as R from 'ramda'
+import { getAvatar } from './storage'
 
 const firestore = firebase.firestore()
 firestore.settings({ timestampsInSnapshots: true })
@@ -11,7 +12,15 @@ const getDataFromSnapshotQuery = snapshot => {
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
-const userInfoSchema = ['color', 'name', 'nickName', 'level', 'uid', 'bio']
+const userInfoSchema = [
+  'color',
+  'name',
+  'nickName',
+  'level',
+  'uid',
+  'bio',
+  'stdID'
+]
 
 // User Method
 export const queryUsers = query =>
@@ -37,7 +46,6 @@ export const getRealtimeUser = (uid, callback) =>
       callback(null)
     } else {
       const user = snapshot.data()
-      console.log('get realtime', user)
       callback(user)
     }
   })
@@ -85,7 +93,8 @@ export const getRealtimeFriends = async (uid, callback) =>
         await Promise.all(
           friends.map(async friend => {
             const user = await getUser(friend.friendUID)
-            return R.pick(userInfoSchema, user)
+            const avatarUrl = await getAvatar(friend.friendUID)
+            return { ...R.pick(userInfoSchema, user), avatarUrl }
           })
         ).then(res => {
           callback(res)
@@ -117,7 +126,7 @@ export const setFriend = async (userUID, friendUID) => {
   })
 }
 
-export const getQuests = (currentDate) =>
+export const getQuests = currentDate =>
   firestore
     .collection(`quests`)
     .where('startDate', '==', currentDate)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Icon } from 'antd'
+import { Button, message, Icon } from 'antd'
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
@@ -20,8 +20,7 @@ class Add extends React.Component {
   }
 
   handleScan = otp => {
-    console.log(otp)
-    if (otp) {
+    if (otp !== null) {
       this.setState({ otp })
     }
   }
@@ -29,8 +28,12 @@ class Add extends React.Component {
     this.handleScan(event.target.value)
   }
 
-  submitOtp = () => {
-    addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+  submitOtp = async () => {
+    message.loading('Adding...')
+    await addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
+    this.setState({
+      otp: ''
+    })
   }
 
   render() {
@@ -53,7 +56,11 @@ class Add extends React.Component {
             </div>
           </div>
         </Section>
-        <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
+        <CodeInput
+          otp={otp}
+          handleChange={this.handleChange}
+          submitOtp={this.submitOtp}
+        />
         <Section id="scan-qrcode">
           <div className="container text-center position-relative">
             <div className="row">
@@ -64,9 +71,7 @@ class Add extends React.Component {
                     เปิดกล้อง
                   </Button>
                 ) : (
-                  <Scanner
-                    onScan={this.handleScan}
-                  />
+                  <Scanner onScan={this.handleScan} />
                 )}
               </div>
             </div>

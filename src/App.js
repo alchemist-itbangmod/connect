@@ -5,7 +5,7 @@ import { hot } from 'react-hot-loader'
 import firebase from 'firebase/app'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
-
+import { message } from 'antd'
 // Internal Libs
 import './libs/initFirebase'
 import './App.css'
@@ -23,6 +23,7 @@ import { getUser, getRealtimeUser } from './firebase/data'
 
 import { actions as userActions } from './redux/modules/user'
 import Loading from './components/Core/Loading'
+import { checkMailKmutt } from './libs/check-mail-kmutt'
 
 injectGlobal`
   body, .ant-collapse {
@@ -46,9 +47,15 @@ class App extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(async authUser => {
       if (authUser) {
-        await this.handleLoggedIn(authUser)
+        if (checkMailKmutt(authUser.email)) {
+          await this.handleLoggedIn(authUser)
+        } else {
+          await firebase.auth().signOut()
+          message.error('Please login with KMUTT Email')
+          this.props.history.push('/login')
+        }
       } else {
-        await this.props.history.push('/login')
+        this.props.history.push('/login')
       }
       await this.setState({
         loading: false
@@ -68,6 +75,7 @@ class App extends React.Component {
     }
     const newUser = await getUser(authUser.uid)
     await this.props.setUser(newUser)
+
     await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
   }
 
