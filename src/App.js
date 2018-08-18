@@ -25,11 +25,13 @@ import { actions as userActions } from './redux/modules/user'
 import Loading from './components/Core/Loading'
 
 injectGlobal`
-  body {
+  body, .ant-collapse {
     font-family: 'Rubik', 'Kanit', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
       'Lucida Grande', sans-serif, tahoma;
     font-weight: 300;
     font-size: 14px;
+  }
+  body {
     margin: 0;
     padding: 0;
     background: #dfeae9;
