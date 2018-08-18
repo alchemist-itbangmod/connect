@@ -83,29 +83,6 @@ class Add extends React.Component {
             </div>
           </div>
         </Section>
-<<<<<<< HEAD
-=======
-        <Section id="typing">
-          <div className="container text-center position-relative">
-            <div className="row">
-              <div className="col-12">
-                <label htmlFor="">ช่องกรอกรหัสลับ</label>
-                <Input
-                  className="text-center"
-                  onChange={this.handleChange}
-                  value={otp}
-                />
-              </div>
-              <div className="col-12 mt-2">
-                <Button type="dashed" onClick={() => this.submitOtp()}>
-                  <Icon type="api" />
-                  ยืนยันรหัสลับ
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Section>
->>>>>>> 492a8d5ec73fa75f026a006902076c1390cda197
       </Layout>
     )
   }
