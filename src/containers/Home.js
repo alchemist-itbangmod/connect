@@ -3,11 +3,14 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QRCode from 'qrcode.react'
 
+import { getAvatar } from '../firebase/storage'
+
 import Section from '../components/Core/Section'
 import Layout from '../components/Core/Layout'
 import EditProfileButton from '../components/Home/EditProfileButton'
 import LogoutButton from '../components/Home/LogoutButton'
 import Profile from '../components/Home/Profile'
+import { actions } from '../redux/modules/home'
 
 const ActionContainer = styled.div`
   position: absolute;
@@ -21,7 +24,12 @@ const ActionContainer = styled.div`
 
 class Home extends React.Component {
   state = {
-    editState: false
+    avatarUrl: ''
+  }
+
+  async componentWillMount() {
+    const url = await getAvatar(this.props.userInfo.uid)
+    this.props.setAvatar(url)
   }
 
   render() {
@@ -39,6 +47,7 @@ class Home extends React.Component {
               nickName={userInfo.nickName}
               level={userInfo.level}
               stdID={userInfo.stdID}
+              avatarUrl={this.props.avatarUrl}
             />
           </div>
         </Section>
@@ -61,7 +70,10 @@ class Home extends React.Component {
 
 export default connect(
   state => ({
-    userInfo: state.user.userInfo
+    userInfo: state.user.userInfo,
+    avatarUrl: state.home.avatarUrl
   }),
-  null
+  {
+    setAvatar: actions.setAvatar
+  }
 )(Home)
