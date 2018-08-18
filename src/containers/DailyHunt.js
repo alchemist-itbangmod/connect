@@ -28,7 +28,7 @@ const Modal = styled(DefaultModal)`
 
 const QuestList = ({ quests, handleCamera }) => (
   <Fragment>
-    {quests.map(({ title, score, members }, index) => (
+    { quests && quests.length > 0 && quests.map(({ title, score, members }, index) => (
       <Collapse className="mt-3" key={`quest-${index}`}>
         <Panel
           header={
