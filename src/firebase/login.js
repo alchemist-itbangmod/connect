@@ -2,7 +2,12 @@ import { getUser, setUser, queryUser } from './data'
 
 export const setUserData = async authUser => {
   const { displayName, email, uid } = authUser
-  setUser(authUser.uid, { name: displayName, email, uid })
+  setUser(authUser.uid, {
+    name: displayName,
+    email,
+    uid,
+    color: 'none'
+  })
 }
 
 export const createOtpForUserIfNotExist = async user => {
