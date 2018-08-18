@@ -1,16 +1,11 @@
 import React from 'react'
-import styled from 'styled-components'
-import DefaultQrReader from 'react-qr-reader'
 import { Button, Input, Icon } from 'antd'
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
-
-const QrReader = styled(DefaultQrReader)`
-  width: 100%;
-`
+import Scanner from '../components/Core/Scanner'
 
 class Add extends React.Component {
   state = {
@@ -62,26 +57,6 @@ class Add extends React.Component {
             </div>
           </div>
         </Section>
-        <Section id="scan-qrcode">
-          <div className="container text-center position-relative">
-            <div className="row">
-              <div className="col-12 py-4">
-                {!cameraOpen ? (
-                  <Button onClick={this.openCamera} type="dashed" size="large">
-                    <Icon type="scan" />
-                    เปิดกล้อง
-                  </Button>
-                ) : (
-                  <QrReader
-                    delay={300}
-                    onError={this.handleError}
-                    onScan={this.handleScan}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-        </Section>
         <Section id="typing">
           <div className="container text-center position-relative">
             <div className="row">
@@ -98,6 +73,25 @@ class Add extends React.Component {
                   <Icon type="api" />
                   ยืนยันรหัสลับ
                 </Button>
+              </div>
+            </div>
+          </div>
+        </Section>
+        <Section id="scan-qrcode">
+          <div className="container text-center position-relative">
+            <div className="row">
+              <div className="col-12 py-2 px-0">
+                {!cameraOpen ? (
+                  <Button onClick={this.openCamera} type="dashed" size="large">
+                    <Icon type="scan" />
+                    เปิดกล้อง
+                  </Button>
+                ) : (
+                  <Scanner
+                    onError={this.handleError}
+                    onScan={this.handleScan}
+                  />
+                )}
               </div>
             </div>
           </div>
