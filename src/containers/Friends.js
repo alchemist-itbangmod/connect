@@ -34,14 +34,18 @@ class Friends extends React.Component {
         <section className="friend-list">
           {this.state.friends.map((friend, index) => (
             <Section id="friend" key={index}>
+              {console.log(friend)}
               <div className="container position-relative d-flex align-items-center">
                 <Avatar size={64} icon="user" />
                 <div className="info ml-2">
-                  <h4 className="my-0">{'เฟิส'}</h4>
+                  <h4 className="my-0">{friend.nickName || '-'}</h4>
                   <p className="small mb-0">
-                    {`${capitalizeFirstLetter(`kanisorn sutham`)} / ชั้นปี: 4`}
+                    {`${capitalizeFirstLetter(
+                      friend.name
+                    )} / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
                   </p>
-                  <p className="small m-0">{`Bio: "อยากบอกพี่รหัสว่า ชอบกินเหล้าค้าบ"`}</p>
+                  <p className="small m-0">{`Bio: "${friend.bio ||
+                    'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
                 </div>
               </div>
             </Section>

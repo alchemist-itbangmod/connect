@@ -1,4 +1,5 @@
-import { getUser, setUser, queryUser } from './data'
+import firebase from 'firebase/app'
+import { getUser, setUser, queryUsers } from './data'
 
 export const setUserData = async authUser => {
   const { displayName, email, uid } = authUser
@@ -6,7 +7,8 @@ export const setUserData = async authUser => {
     name: displayName,
     email,
     uid,
-    color: 'none'
+    color: 'none',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
 }
 
@@ -29,7 +31,7 @@ export const generateAndSaveOtpToDB = async uid => {
 }
 
 const otpExists = async otp => {
-  const users = await queryUser(['otp', '==', otp])
+  const users = await queryUsers(['otp', '==', otp])
   return users.length > 0
 }
 

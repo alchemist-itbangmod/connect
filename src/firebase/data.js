@@ -11,7 +11,7 @@ const getDataFromSnapshotQuery = snapshot => {
 }
 
 // User Method
-export const queryUser = query =>
+export const queryUsers = query =>
   firestore
     .collection('users')
     .where(...query)
@@ -32,7 +32,7 @@ export const setUser = (uid, data = {}) =>
   firestore.doc(`users/${uid}`).set(
     {
       ...data,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     },
     { merge: true }
   )
@@ -51,7 +51,7 @@ export const getFriends = async uid => {
 
   const friendList = await Promise.all(
     friends.map(async friend => {
-      const user = await getUser(friend.RelatedUserUID)
+      const user = await getUser(friend.friendUID)
       return user
     })
   ).then(res => {
@@ -61,9 +61,26 @@ export const getFriends = async uid => {
   return friendList
 }
 
-export const setFriends = (userUID, friendsUID) =>
-  firestore.collection(`friends`).add({
+export const getFriend = (userUID, friendUID) =>
+  firestore
+    .collection(`friends`)
+    .where('userUID', '==', userUID)
+    .where('friendUID', '==', friendUID)
+    .get()
+    .then(
+      snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
+    )
+
+export const setFriend = async (userUID, friendUID) => {
+  // 2-way add friends
+  await firestore.collection(`friends`).add({
     userUID,
-    friendsUID,
+    friendUID,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
+  await firestore.collection(`friends`).add({
+    userUID: friendUID,
+    friendUID: userUID,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+}

@@ -61,6 +61,8 @@ class App extends React.Component {
     const user = await getUser(authUser.uid)
     if (user !== null) {
       console.log('already registration')
+      await createOtpForUserIfNotExist(authUser)
+      const user = await getUser(authUser.uid)
       this.props.setUser(user)
     } else {
       console.log('not registration')
