@@ -14,10 +14,14 @@ const QrReader = styled(DefaultQrReader)`
     }
 `
 
-const Scanner = ({onScan, onError}) => (
+const handleError = err => {
+  console.log(err)
+}
+
+const Scanner = ({onScan}) => (
   <QrReader
     delay={300}
-    onError={onError}
+    onError={handleError}
     onScan={onScan}
   />
 )
