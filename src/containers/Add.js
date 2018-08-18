@@ -20,8 +20,7 @@ class Add extends React.Component {
   }
 
   handleScan = otp => {
-    console.log(otp)
-    if (otp) {
+    if (otp !== null) {
       this.setState({ otp })
     }
   }

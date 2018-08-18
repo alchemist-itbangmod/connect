@@ -68,6 +68,7 @@ class App extends React.Component {
     }
     const newUser = await getUser(authUser.uid)
     await this.props.setUser(newUser)
+
     await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
   }
 
