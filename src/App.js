@@ -51,7 +51,7 @@ class App extends React.Component {
           await this.handleLoggedIn(authUser)
         } else {
           await firebase.auth().signOut()
-          message.error('Please login with KMUTT email')
+          message.error('Please login with KMUTT Email')
           this.props.history.push('/login')
         }
       } else {
