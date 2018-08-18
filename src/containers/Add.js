@@ -1,11 +1,5 @@
 import React from 'react'
-<<<<<<< HEAD
 import { Button, message, Icon } from 'antd'
-=======
-import styled from 'styled-components'
-import DefaultQrReader from 'react-qr-reader'
-import { Button, Input, Icon, message } from 'antd'
->>>>>>> 492a8d5ec73fa75f026a006902076c1390cda197
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
