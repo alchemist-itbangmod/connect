@@ -1,12 +1,17 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import moment from 'moment'
+import firebase from 'firebase/app'
+
 import { Collapse, Icon, Modal as DefaultModal } from 'antd'
 
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import Scanner from '../components/Core/Scanner'
 import { CodeInput } from '../components/Core/Input'
+
+import { getQuests } from '../firebase/data'
 
 const Nickname = styled.h3`
   margin: .3em 0;
@@ -28,7 +33,7 @@ const QuestList = ({ quests, handleCamera }) => (
         <Panel
           header={
             <div className="container d-flex align-items-center justify-content-between">
-              <h5 className="mb-0">{`ค้นหา ${title}`}</h5>
+              <h5 className="mb-0">{`${title}`}</h5>
               <Icon onClick={handleCamera} type="scan" style={{ fontSize: 24 }} />
             </div>
           }
@@ -81,7 +86,11 @@ const example = {
 }
 
 class DailyHunt extends React.Component {
-  state = { visible: false, otp: '' }
+  state = {
+    quests: [],
+    visible: false,
+    otp: ''
+  }
 
   handleCamera = () => {
     this.setState({
@@ -111,8 +120,15 @@ class DailyHunt extends React.Component {
     }
   }
 
+  componentDidMount = async () => {
+    const currentDate = moment('00:00:00', 'hh:mm:ss').toDate()
+    const timestamp = firebase.firestore.Timestamp.fromDate(currentDate)
+    const quests = await getQuests(timestamp)
+    this.setState({ quests })
+  }
+
   render() {
-    const { otp } = this.state
+    const { otp, quests } = this.state
     return (
       <Layout>
         <Section id="mode">
@@ -124,7 +140,7 @@ class DailyHunt extends React.Component {
             </div>
           </div>
         </Section>
-        <QuestList handleCamera={this.handleCamera} quests={[example, example, example]} />
+        <QuestList handleCamera={this.handleCamera} quests={quests} />
         <Modal
           visible={this.state.visible}
           onCancel={this.handleCancel}
