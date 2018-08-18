@@ -6,6 +6,7 @@ import { addFriendWithOTP } from '../firebase/add'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import Scanner from '../components/Core/Scanner'
+import { CodeInput } from '../components/Core/Input'
 
 class Add extends React.Component {
   state = {
@@ -24,11 +25,6 @@ class Add extends React.Component {
       this.setState({ otp })
     }
   }
-
-  handleError = err => {
-    console.log(err)
-  }
-
   handleChange = event => {
     this.handleScan(event.target.value)
   }
@@ -57,26 +53,7 @@ class Add extends React.Component {
             </div>
           </div>
         </Section>
-        <Section id="typing">
-          <div className="container text-center position-relative">
-            <div className="row">
-              <div className="col-12">
-                <label htmlFor="">ช่องกรอกรหัสลับ</label>
-                <Input
-                  className="text-center"
-                  onChange={this.handleChange}
-                  value={otp}
-                />
-              </div>
-              <div className="col-12 mt-2">
-                <Button type="dashed" onClick={this.submitOtp}>
-                  <Icon type="api" />
-                  ยืนยันรหัสลับ
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Section>
+        <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
         <Section id="scan-qrcode">
           <div className="container text-center position-relative">
             <div className="row">
@@ -88,7 +65,6 @@ class Add extends React.Component {
                   </Button>
                 ) : (
                   <Scanner
-                    onError={this.handleError}
                     onScan={this.handleScan}
                   />
                 )}
