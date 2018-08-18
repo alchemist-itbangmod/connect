@@ -43,7 +43,7 @@ export const getUserColor = user => user.color.get().then(returnDocOrNull)
 export const getFriends = async uid => {
   let friends = await firestore
     .collection(`friends`)
-    .where('RelatingUserUID', '==', uid)
+    .where('userUID', '==', uid)
     .get()
     .then(
       snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
@@ -61,9 +61,9 @@ export const getFriends = async uid => {
   return friendList
 }
 
-export const setFriends = (userUid, friendUid) =>
+export const setFriends = (userUID, friendsUID) =>
   firestore.collection(`friends`).add({
-    RelatingUserUID: userUid,
-    RelatedUserUID: friendUid,
+    userUID,
+    friendsUID,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   })
