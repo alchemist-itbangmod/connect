@@ -1,11 +1,5 @@
 import React from 'react'
-<<<<<<< HEAD
-import { Button, Input, Icon } from 'antd'
-=======
-import styled from 'styled-components'
-import DefaultQrReader from 'react-qr-reader'
-import { Button, Input, Icon, message } from 'antd'
->>>>>>> add message state for adding friends
+import { Button, message, Icon } from 'antd'
 import { connect } from 'react-redux'
 
 import { addFriendWithOTP } from '../firebase/add'
@@ -62,7 +56,11 @@ class Add extends React.Component {
             </div>
           </div>
         </Section>
-        <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
+        <CodeInput
+          otp={otp}
+          handleChange={this.handleChange}
+          submitOtp={this.submitOtp}
+        />
         <Section id="scan-qrcode">
           <div className="container text-center position-relative">
             <div className="row">
@@ -73,9 +71,7 @@ class Add extends React.Component {
                     เปิดกล้อง
                   </Button>
                 ) : (
-                  <Scanner
-                    onScan={this.handleScan}
-                  />
+                  <Scanner onScan={this.handleScan} />
                 )}
               </div>
             </div>

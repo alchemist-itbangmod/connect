@@ -126,7 +126,7 @@ export const setFriend = async (userUID, friendUID) => {
   })
 }
 
-export const getQuests = (currentDate) =>
+export const getQuests = currentDate =>
   firestore
     .collection(`quests`)
     .where('startDate', '==', currentDate)

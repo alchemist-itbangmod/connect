@@ -15,4 +15,5 @@ export const getAvatar = uid =>
     .then(url => url)
     .catch(err => {
       if (err.code === 'storage/object-not-found') return null
+      return null
     })
