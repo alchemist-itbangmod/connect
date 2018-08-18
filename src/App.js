@@ -27,7 +27,7 @@ import Loading from './components/Core/Loading'
 injectGlobal`
   body {
     font-family: 'Rubik', 'Kanit', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial,
-      'Lucida Grande', sans-serif, tohama;
+      'Lucida Grande', sans-serif, tahoma;
     font-weight: 300;
     font-size: 14px;
     margin: 0;
