@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Collapse, Icon, Modal } from 'antd'
+import { Collapse, Icon, Modal as DefaultModal } from 'antd'
 
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
@@ -12,8 +12,13 @@ const Nickname = styled.h3`
   margin: .3em 0;
   text-decoration-line: ${props => props.isScan ? 'line-through' : 'un-set'};
 `
-const Panel = styled(Collapse.Panel)`
+const Panel = Collapse.Panel
 
+const Modal = styled(DefaultModal)`
+  top: 25px;
+  .ant-modal-body {
+    padding: auto 0 0 0;
+  }
 `
 
 const QuestList = ({ quests, handleCamera }) => (
