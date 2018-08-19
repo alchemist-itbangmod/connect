@@ -39,6 +39,37 @@ export default {
               crossOrigin="anonymous"
             />
             <title>IT Connect 2018 | กิจกรรมตามล่ารหัสลับ</title>
+            <meta property="og:title" content="IT Connect 2018" />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://connect.itbangmod.in.th" />
+            <meta property="og:image" content="/logo.png" />
+
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/apple-touch-icon.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/favicon-32x32.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/favicon-16x16.png"
+            />
+            <link rel="manifest" href="/site.webmanifest" />
+            <link
+              rel="mask-icon"
+              href="/safari-pinned-tab.svg"
+              color="#204dd3"
+            />
+            <meta name="msapplication-TileColor" content="#204dd3" />
+            <meta name="theme-color" content="#204dd3" />
+
             {renderMeta.styleTags}
           </Head>
           <Body>
