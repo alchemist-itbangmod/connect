@@ -7,9 +7,9 @@ import { actions } from '../../redux/modules/home'
 import ConnectAvatar from '../Core/Avatar'
 
 function isLt2M(file) {
-  const isLt2M = file.size / 1024 / 1024 < 2
+  const isLt2M = file.size / 1024 / 1024 < 4
   if (!isLt2M) {
-    message.error('รูปของคุณต้องมีขนาดเล็กกว่า 2MB นะครับ!')
+    message.error('รูปของคุณต้องมีขนาดเล็กกว่า 4MB นะครับ!')
   }
   return isLt2M
 }
