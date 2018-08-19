@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { message } from 'antd'
 
 import { queryUsers, getFriend, setFriend, getQuest, setQuestColor } from './data'
