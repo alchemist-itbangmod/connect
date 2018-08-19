@@ -35,25 +35,50 @@ injectGlobal`
   body {
     margin: 0;
     padding: 0;
-    background: #dfeae9;
+    background: #e8edfa;
+  }
+
+  * {
+    transition: all .3s;
   }
 `
 
 const themes = {
   pink: {
-    primaryColor: '#ff0000'
+    primaryColor: '#ff727f',
+    backgroundColor: '#ffd8db'
+  },
+  blue: {
+    primaryColor: '#8bdbdb',
+    backgroundColor: '#d8f3f3'
+  },
+  orange: {
+    primaryColor: '#ff9819',
+    backgroundColor: '#ffd199'
+  },
+  green: {
+    primaryColor: '#53d270',
+    backgroundColor: '#c8f9d3'
+  },
+  red: {
+    primaryColor: '#d03439',
+    backgroundColor: '#efdddb'
+  },
+  yellow: {
+    primaryColor: '#e5cd17',
+    backgroundColor: '#fff4a3'
   },
   none: {
-    primaryColor: '#ff0000'
+    primaryColor: '#204dd3',
+    backgroundColor: '#e8edfa'
   }
 }
 
 const getThemeByColor = color => {
-  console.log(color)
-  if (color) {
-    return themes[color]
+  if (R.isEmpty(color) || R.isNil(color)) {
+    return themes['none']
   }
-  return themes['none']
+  return themes[color]
 }
 
 class App extends React.Component {
@@ -93,7 +118,19 @@ class App extends React.Component {
     const newUser = await getUser(authUser.uid)
     await this.props.setUser(newUser)
 
-    await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
+    // force change background color
+    console.log(themes[newUser.color])
+    document.body.style.backgroundColor = getThemeByColor(
+      newUser.color
+    ).backgroundColor
+
+    await getRealtimeUser(authUser.uid, user => {
+      this.props.setUser(user)
+      // force change background color
+      document.body.style.backgroundColor = getThemeByColor(
+        user.color
+      ).backgroundColor
+    })
   }
 
   render() {

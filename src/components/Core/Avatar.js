@@ -9,7 +9,7 @@ const AvatarContainer = styled.div`
   width: ${props => props.width}px;
   border-radius: 50%;
   margin: 0 auto;
-  border: 2px solid #307375;
+border: 2px solid ${props => props.theme.primaryColor};
 `
 
 const Avatar = ({ avatarUrl, size = 64 }) => (

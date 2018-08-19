@@ -15,7 +15,7 @@ const Container = styled.nav`
 `
 
 const Menu = styled(NavLink)`
-  color: #307375;
+  color: ${props => props.theme.primaryColor};
   font-size: 0.70711rem;
   letter-spacing: 0.0075rem;
   line-height: 1;
