@@ -1,6 +1,8 @@
-import { queryUsers, getFriend, setFriend } from './data'
-import { generateAndSaveOtpToDB } from './login'
+import moment from 'moment'
 import { message } from 'antd'
+
+import { queryUsers, getFriend, setFriend, getQuestMember, setQuestColor } from './data'
+import { generateAndSaveOtpToDB } from './login'
 let failedAttempts = 0
 let remainingTime = 0
 let lock = false
@@ -26,6 +28,44 @@ export const addFriendWithOTP = async (userUID, otp) => {
     }
   } else {
     message.error('no user with this otp')
+    failedAttempts += 1
+    if (failedAttempts >= 3) {
+      lock = true
+      remainingTime = 10
+      const interval = setInterval(() => remainingTime--, 1000)
+      setTimeout(() => {
+        failedAttempts = 0
+        lock = false
+        clearInterval(interval)
+      }, remainingTime * 1000)
+    }
+  }
+
+  if (lock) {
+    message.error('Too many invalid attempts please try again in a minute')
+    return
+  }
+}
+
+export const addQuestMember = async (questId, otp, { userUID, color }) => {
+
+  const questMembers = await getQuestMember(questId)
+  const members = await queryUsers(['otp', '==', otp])
+
+  if (members.length > 0 && questMembers.length > 0) {
+    const [ member ] = members
+    const checkMembers = await questMembers.filter(({uid}) => uid === member.uid)
+
+    const checkColors = await checkMembers.colors > 0 && checkMembers.colors.filter(scanner => scanner && scanner.color === color)
+    if (checkColors > 0) {
+      message.error('You are already scan this member')
+    } else {
+      await setQuestColor(questId, member.uid, { userUID, color })
+      generateAndSaveOtpToDB(member.uid)
+      message.success('Done! You have scanned!')
+    }
+  } else {
+    message.error('no member with this otp')
     failedAttempts += 1
     if (failedAttempts >= 3) {
       lock = true
