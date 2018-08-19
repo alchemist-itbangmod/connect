@@ -30,7 +30,17 @@ class Profile extends React.Component {
     bio: this.props.bio || ''
   }
 
-  setField = (field, value) => this.setState({ [field]: value })
+  setField = (field, value) => {
+    if (field === 'nickName' && value.length > 20) {
+      message.error('กรอกชื่อเล่นยาวกว่านี้ไม่ได้นะ')
+      return
+    }
+    if (field === 'bio' && value.length > 144) {
+      message.error('กรอก Bio ยาวกว่านี้ไม่ได้นะ! ไม่เกิน 144 ตัวอักษร')
+      return
+    }
+    this.setState({ [field]: value })
+  }
 
   handleUpdateProfile = async () => {
     // Update Student ID
