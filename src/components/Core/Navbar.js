@@ -25,6 +25,13 @@ const Menu = styled(NavLink)`
   position: relative;
   transition: all 0.3s;
 
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+    color: ${props => props.theme.primaryColor};
+  }
+
   // Active Mode
   opacity: 0.4;
   &.active {
