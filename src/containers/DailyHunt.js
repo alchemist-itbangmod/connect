@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
 import firebase from 'firebase/app'
@@ -12,6 +13,7 @@ import Scanner from '../components/Core/Scanner'
 import { CodeInput } from '../components/Core/Input'
 
 import { getQuests } from '../firebase/data'
+import { addQuestMember } from '../firebase/add'
 
 const Nickname = styled.h3`
   margin: .3em 0;
@@ -28,13 +30,13 @@ const Modal = styled(DefaultModal)`
 
 const QuestList = ({ quests, handleCamera }) => (
   <Fragment>
-    { quests && quests.length > 0 && quests.map(({ title, score, members }, index) => (
+    { quests && quests.length > 0 && quests.map(({ id, title, score, members }, index) => (
       <Collapse className="mt-3" key={`quest-${index}`}>
         <Panel
           header={
             <div className="container d-flex align-items-center justify-content-between">
               <h5 className="mb-0">{`${title}`}</h5>
-              <Icon onClick={handleCamera} type="scan" style={{ fontSize: 24 }} />
+              <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
             </div>
           }
           key="1"
@@ -89,12 +91,14 @@ class DailyHunt extends React.Component {
   state = {
     quests: [],
     visible: false,
+    questId: '',
     otp: ''
   }
 
-  handleCamera = () => {
+  handleCamera = questId => {
     this.setState({
-      visible: !this.state.visible
+      visible: !this.state.visible,
+      questId
     })
   }
   handleCancel = () => {
@@ -110,7 +114,9 @@ class DailyHunt extends React.Component {
   }
 
   submitOtp = () => {
-
+    const { questId, otp } = this.state
+    const { userInfo: { uid: userUID, color } } = this.props
+    addQuestMember(questId, otp, { userUID, color })
   }
 
   handleScan = otp => {
@@ -153,4 +159,9 @@ class DailyHunt extends React.Component {
     )
   }
 }
-export default DailyHunt
+export default connect(
+  state => ({
+    userInfo: state.user.userInfo
+  }),
+  null
+)(DailyHunt)
