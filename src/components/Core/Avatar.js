@@ -9,11 +9,11 @@ const AvatarContainer = styled.div`
   width: ${props => props.width}px;
   border-radius: 50%;
   margin: 0 auto;
-border: 2px solid ${props => props.theme.primaryColor};
+border: 2px solid ${props => props.color};
 `
 
-const Avatar = ({ avatarUrl, size = 64 }) => (
-  <AvatarContainer src={avatarUrl} height={size} width={size} />
+const Avatar = ({ avatarUrl, size = 64, color }) => (
+  <AvatarContainer src={avatarUrl} height={size} width={size} color={color} />
 )
 
 export default Avatar

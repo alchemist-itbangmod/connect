@@ -74,7 +74,7 @@ const themes = {
   }
 }
 
-const getThemeByColor = color => {
+export const getThemeByColor = color => {
   if (R.isEmpty(color) || R.isNil(color)) {
     return themes['none']
   }

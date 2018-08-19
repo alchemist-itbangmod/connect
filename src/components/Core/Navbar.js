@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon, Badge } from 'antd'
+import { Icon } from 'antd'
 import { NavLink } from 'react-static'
 
 const Container = styled.nav`

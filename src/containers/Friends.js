@@ -7,6 +7,7 @@ import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import ConnectAvatar from '../components/Core/Avatar'
 import { getRealtimeFriends } from '../firebase/data'
+import { getThemeByColor } from '../App'
 class Friends extends React.Component {
   state = {
     friends: []
@@ -48,7 +49,11 @@ class Friends extends React.Component {
                   {!friend.avatarUrl ? (
                     <Avatar size={76} icon="user" src={friend.avatarUrl} />
                   ) : (
-                    <ConnectAvatar size={76} avatarUrl={friend.avatarUrl} />
+                    <ConnectAvatar
+                      size={76}
+                      avatarUrl={friend.avatarUrl}
+                      color={getThemeByColor(friend.color).primaryColor}
+                    />
                   )}
                 </div>
                 <div className="info ml-2">

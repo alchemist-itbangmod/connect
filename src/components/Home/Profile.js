@@ -1,4 +1,5 @@
 import React from 'react'
+import { withTheme } from 'styled-components'
 import { Avatar, Button, Input, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
@@ -92,7 +93,11 @@ class Profile extends React.Component {
               {!this.props.avatarUrl ? (
                 <Avatar size={128} icon="user" src={this.props.avatarUrl} />
               ) : (
-                <ConnectAvatar size={128} avatarUrl={this.props.avatarUrl} />
+                <ConnectAvatar
+                  size={128}
+                  avatarUrl={this.props.avatarUrl}
+                  color={this.props.theme.primaryColor}
+                />
               )}
             </div>
             <h2 className="my-1">{nickName || '-'}</h2>
@@ -140,10 +145,13 @@ class Profile extends React.Component {
   }
 }
 
-export default connect(
-  state => ({
-    isEdit: state.home.isEdit,
-    userInfo: state.user.userInfo
-  }),
-  null
+export default R.compose(
+  withTheme,
+  connect(
+    state => ({
+      isEdit: state.home.isEdit,
+      userInfo: state.user.userInfo
+    }),
+    null
+  )
 )(Profile)
