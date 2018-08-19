@@ -4,10 +4,11 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
 import firebase from 'firebase/app'
-
-import { Collapse, Icon, Modal as DefaultModal } from 'antd'
+import { Avatar, Collapse, Icon, Modal as DefaultModal } from 'antd'
+import * as R from 'ramda'
 
 import { getThemeByColor } from '../App'
+import ConnectAvatar from '../components/Core/Avatar'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import Scanner from '../components/Core/Scanner'
@@ -16,14 +17,16 @@ import { CodeInput } from '../components/Core/Input'
 import { getQuests } from '../firebase/data'
 import { addQuestMember } from '../firebase/add'
 
-const Nickname = styled.h3`
+const Nickname = styled.h4`
   margin-bottom: 0;
   text-decoration-line: ${props => (props.isScan ? 'line-through' : 'un-set')};
+  color: ${props => (props.isScan ? '#777777' : '#000')};
   line-height: 1;
 `
 const Panel = styled(Collapse.Panel)`
   .ant-collapse-header {
     padding-left: 0 !important;
+    padding-bottom: 0 !important;
   }
 `
 
@@ -43,12 +46,20 @@ const StatusBox = styled.div`
 
 const colors = ['blue', 'green', 'yellow', 'orange', 'pink', 'red']
 
-const StatusList = ({ value = 0 }) => (
+const countColor = R.groupBy(({color}) => {
+  return color === colors[0] ? colors[0]
+    : color === colors[1] ? colors[1]
+      : color === colors[2] ? colors[2]
+        : color === colors[3] ? colors[3]
+          : color === colors[4] ? colors[4] : colors[5]
+})
+
+const StatusList = ({ value = {} }) => (
   <div className='d-flex'>
     {
-      colors.map(color => (
-        <StatusBox color={color} className='d-flex justify-content-center align-items-center'>
-          {value}
+      colors.map((color) => (
+        <StatusBox key={`${color}`} color={color} className='d-flex justify-content-center align-items-center'>
+          {(value[color] && value[color].length) || 0}
         </StatusBox>
       ))
     }
@@ -58,44 +69,65 @@ const StatusList = ({ value = 0 }) => (
 const MemberList = ({ members }) => (
   <Fragment>
     {
-      members.map(({ nickname, isScan }, index) => (
-        <Nickname className='py-2' key={`${nickname}-${index}`} isScan={isScan}>
-          {nickname}
-        </Nickname>
+      members.map(({ nickname, color, bio, avatarUrl }, index) => (
+        <Section key={`${nickname}-${index}`}>
+          <div className="container">
+            <div className="row">
+              <div className='col-4 d-flex align-items-center'>
+                {!avatarUrl ? (
+                  <Avatar size={45} icon="user" src={avatarUrl} />
+                ) : (
+                  <ConnectAvatar
+                    size={45}
+                    avatarUrl={avatarUrl}
+                    color={getThemeByColor(color).primaryColor}
+                  />
+                )}
+              </div>
+              <div className="col-8 pl-0">
+                <Nickname className="my-0">{nickname || '-'}</Nickname>
+                <p className="small m-0">{`"${bio || 'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
+              </div>
+            </div>
+          </div>
+        </Section>
       ))
     }
   </Fragment>
 )
 
-const QuestList = ({ quests, handleCamera }) => (
+const QuestList = ({ quests = [], handleCamera }) => (
   <Fragment>
-    { quests && quests.length > 0 && quests.map(({ id, title, score, members }, index) => (
-      <Collapse className="mt-3" key={`quest-${index}`}>
-        <Panel
-          header={
+    {
+      quests.map(({ id, title, score, members, colors }) => (
+        <Collapse className="mt-3" key={`${id}-${title}`}>
+          <Panel
+            header={
+              <Fragment>
+                <div className="container mb-2 d-flex align-items-center justify-content-between">
+                  <h5 className="mb-0">{`${title}`}</h5>
+                  <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
+                </div>
+                <StatusList value={countColor(colors)} />
+              </Fragment>
+            }
+            key="1"
+            showArrow={false}
+          >
             <div className="container d-flex align-items-center justify-content-between">
-              <h5 className="mb-0">{`${title}`}</h5>
-              <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
+              <div className="info">
+                <h6 className="mb-0">{`คะแนน : ${score || 0}`}</h6>
+              </div>
+              <div className="info">
+                <h6 className="mb-0">{`จำนวนทั้งหมด ${members.length}`}</h6>
+              </div>
             </div>
-          }
-          key="1"
-          showArrow={false}
-        >
-          <div className="container d-flex align-items-center justify-content-between">
-            <div className="info">
-              <h6 className="mb-0">{`คะแนน : ${score}`}</h6>
+            <div className="info text-center pt-3">
+              <MemberList members={members} />
             </div>
-            <div className="info">
-              <h6 className="mb-0">{`จำนวน ${members.length}`}</h6>
-            </div>
-          </div>
-          <div className="info text-center pt-3">
-            <MemberList members={members} />
-          </div>
-        </Panel>
-        <StatusList />
-      </Collapse>
-    ))
+          </Panel>
+        </Collapse>
+      ))
     }
   </Fragment>
 )
@@ -154,7 +186,6 @@ class DailyHunt extends React.Component {
     const currentDate = moment('00:00:00', 'hh:mm:ss').toDate()
     const timestamp = firebase.firestore.Timestamp.fromDate(currentDate)
     const quests = await getQuests(timestamp)
-    console.log(quests)
     this.setState({ quests })
   }
 
