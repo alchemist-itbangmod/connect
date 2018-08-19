@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { message } from 'antd'
 
-import { queryUsers, getFriend, setFriend, getQuestMember, setQuestColor } from './data'
+import { queryUsers, getFriend, setFriend, getQuest, setQuestColor } from './data'
 import { generateAndSaveOtpToDB } from './login'
 let failedAttempts = 0
 let remainingTime = 0
