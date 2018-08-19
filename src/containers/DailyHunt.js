@@ -7,6 +7,7 @@ import firebase from 'firebase/app'
 
 import { Collapse, Icon, Modal as DefaultModal } from 'antd'
 
+import { getThemeByColor } from '../App'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import Scanner from '../components/Core/Scanner'
@@ -16,10 +17,15 @@ import { getQuests } from '../firebase/data'
 import { addQuestMember } from '../firebase/add'
 
 const Nickname = styled.h3`
-  margin: 0.3em 0;
+  margin-bottom: 0;
   text-decoration-line: ${props => (props.isScan ? 'line-through' : 'un-set')};
+  line-height: 1;
 `
-const Panel = Collapse.Panel
+const Panel = styled(Collapse.Panel)`
+  .ant-collapse-header {
+    padding-left: 0 !important;
+  }
+`
 
 const Modal = styled(DefaultModal)`
   top: 25px;
@@ -29,28 +35,31 @@ const Modal = styled(DefaultModal)`
 `
 
 const StatusBox = styled.div`
-  max-width: 20%;
+  max-width: 16.6666666667%;
   width: 100px;
   height: 50px;
-  display: inline-block;
-  background-color: ${props => props.color};
+  background-color: ${props => getThemeByColor(props.color).primaryColor};
 `
 
-const colors = []
+const colors = ['blue', 'green', 'yellow', 'orange', 'pink', 'red']
 
-const StatusList = () => (
-  <Fragment>
+const StatusList = ({ value = 0 }) => (
+  <div className='d-flex'>
     {
-      colors.map(color => <StatusBox color={color} />)
+      colors.map(color => (
+        <StatusBox color={color} className='d-flex justify-content-center align-items-center'>
+          {value}
+        </StatusBox>
+      ))
     }
-  </Fragment>
+  </div>
 )
 
 const MemberList = ({ members }) => (
   <Fragment>
     {
       members.map(({ nickname, isScan }, index) => (
-        <Nickname key={`${nickname}-${index}`} isScan={isScan}>
+        <Nickname className='py-2' key={`${nickname}-${index}`} isScan={isScan}>
           {nickname}
         </Nickname>
       ))
@@ -76,11 +85,15 @@ const QuestList = ({ quests, handleCamera }) => (
             <div className="info">
               <h6 className="mb-0">{`คะแนน : ${score}`}</h6>
             </div>
-            <div className="info text-center">
-              <MemberList members={members} />
+            <div className="info">
+              <h6 className="mb-0">{`จำนวน ${members.length}`}</h6>
             </div>
           </div>
+          <div className="info text-center pt-3">
+            <MemberList members={members} />
+          </div>
         </Panel>
+        <StatusList />
       </Collapse>
     ))
     }
