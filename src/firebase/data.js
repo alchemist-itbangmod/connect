@@ -128,23 +128,34 @@ export const setFriend = async (userUID, friendUID) => {
   })
 }
 
-export const getQuests = currentDate =>
-  firestore
+export const getQuests = async currentDate => {
+  const quests = await firestore
     .collection(`quests`)
     .where('startDate', '==', currentDate)
     .get()
     .then(
       snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
     )
+  const questsWithMembers = await Promise.all(quests
+    .map(async quests => {
+      return {
+        ...quests,
+        members: await Promise.all(await quests.members.map(async (member) => {
+          const { nickName: nickname, bio, color, level } = await getUser(member.uid)
+          const avatarUrl = await getAvatar(member.uid)
+          return { ...member, nickname, bio, color, level, avatarUrl }
+        }))
+      }
+    }))
+  return questsWithMembers
+}
 
-export const getQuest = async (questId) => {
+export const getQuest = async questId => {
   let quest = await firestore
     .collection(`quests`)
     .doc(`${questId}`)
     .get()
-    .then(
-      doc => (doc.exists ? { ...doc.data() } : null)
-    )
+    .then(returnDocOrNull)
   return quest
 }
 
