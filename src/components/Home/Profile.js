@@ -113,7 +113,8 @@ class Profile extends React.Component {
             <h2 className="my-1">{nickName || '-'}</h2>
             <p className="small mb-0 mt-2">{`รหัสนักศึกษา: ${stdID || '-'}`}</p>
             <p className="mb-2">
-              {`${capitalizeFirstLetter(name)}, ชั้นปี: ${level || '-'}, `}
+              {`${name ? capitalizeFirstLetter(name) : '-'}, ชั้นปี: ${level ||
+                '-'}, `}
               <b>{colorCode}</b>
             </p>
             <p className="small mb-2">{bio}</p>

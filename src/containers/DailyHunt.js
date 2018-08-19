@@ -14,8 +14,8 @@ import { CodeInput } from '../components/Core/Input'
 import { getQuests } from '../firebase/data'
 
 const Nickname = styled.h3`
-  margin: .3em 0;
-  text-decoration-line: ${props => props.isScan ? 'line-through' : 'un-set'};
+  margin: 0.3em 0;
+  text-decoration-line: ${props => (props.isScan ? 'line-through' : 'un-set')};
 `
 const Panel = Collapse.Panel
 
@@ -28,36 +28,42 @@ const Modal = styled(DefaultModal)`
 
 const QuestList = ({ quests, handleCamera }) => (
   <Fragment>
-    { quests && quests.length > 0 && quests.map(({ title, score, members }, index) => (
-      <Collapse className="mt-3" key={`quest-${index}`}>
-        <Panel
-          header={
+    {quests &&
+      quests.length > 0 &&
+      quests.map(({ title, score, members }, index) => (
+        <Collapse className="mt-3" key={`quest-${index}`}>
+          <Panel
+            header={
+              <div className="container d-flex align-items-center justify-content-between">
+                <h5 className="mb-0">{`${title}`}</h5>
+                <Icon
+                  onClick={handleCamera}
+                  type="scan"
+                  style={{ fontSize: 24 }}
+                />
+              </div>
+            }
+            key="1"
+            showArrow={false}
+          >
             <div className="container d-flex align-items-center justify-content-between">
-              <h5 className="mb-0">{`${title}`}</h5>
-              <Icon onClick={handleCamera} type="scan" style={{ fontSize: 24 }} />
-            </div>
-          }
-          key="1"
-          showArrow={false}
-        >
-          <div className="container d-flex align-items-center justify-content-between">
-            <div className="info">
-              <h6 className="mb-0">{`คะแนน : ${score}`}</h6>
+              <div className="info">
+                <h6 className="mb-0">{`คะแนน : ${score}`}</h6>
+              </div>
+              <div className="info text-center">
+                <h6 className="mb-0">{`ทั้งหมด ${members.length} คน`}</h6>
+              </div>
             </div>
             <div className="info text-center">
-              <h6 className="mb-0">{`ทั้งหมด ${members.length} คน`}</h6>
+              {members.map(({ nickname, isScan }, index) => (
+                <Nickname key={`${nickname}-${index}`} isScan={isScan}>
+                  {nickname}
+                </Nickname>
+              ))}
             </div>
-          </div>
-          <div className="info text-center">
-            {
-              members.map(({ nickname, isScan }, index) => (
-                <Nickname key={`${nickname}-${index}`} isScan={isScan}>{nickname}</Nickname>
-              ))
-            }
-          </div>
-        </Panel>
-      </Collapse>
-    ))}
+          </Panel>
+        </Collapse>
+      ))}
   </Fragment>
 )
 
@@ -103,18 +109,15 @@ class DailyHunt extends React.Component {
     })
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       otp: event.target.value
     })
   }
 
-  submitOtp = () => {
-
-  }
+  submitOtp = () => {}
 
   handleScan = otp => {
-    console.log(otp)
     if (otp) {
       this.setState({ otp })
     }
@@ -146,7 +149,11 @@ class DailyHunt extends React.Component {
           onCancel={this.handleCancel}
           footer={null}
         >
-          <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
+          <CodeInput
+            otp={otp}
+            handleChange={this.handleChange}
+            submitOtp={this.submitOtp}
+          />
           <Scanner onScan={this.handleScan} />
         </Modal>
       </Layout>

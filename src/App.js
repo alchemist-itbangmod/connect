@@ -95,23 +95,24 @@ class App extends React.Component {
           await firebase.auth().signOut()
           message.error('กรุณาเข้าสู่ระบบด้วย KMUTT Email นะครับ!')
           this.props.history.push('/login')
+          await this.setState({
+            loading: false
+          })
         }
       } else {
         this.props.history.push('/login')
+        await this.setState({
+          loading: false
+        })
       }
-      await this.setState({
-        loading: false
-      })
     })
   }
 
   handleLoggedIn = async authUser => {
     const user = await getUser(authUser.uid)
     if (user !== null) {
-      console.log('already registration')
       await createOtpForUserIfNotExist(authUser)
     } else {
-      console.log('not registration')
       await setUserData(authUser)
       await createOtpForUserIfNotExist(authUser)
     }
@@ -119,7 +120,6 @@ class App extends React.Component {
     await this.props.setUser(newUser)
 
     // force change background color
-    console.log(themes[newUser.color])
     document.body.style.backgroundColor = getThemeByColor(
       newUser.color
     ).backgroundColor
@@ -130,6 +130,9 @@ class App extends React.Component {
       document.body.style.backgroundColor = getThemeByColor(
         user.color
       ).backgroundColor
+    })
+    await this.setState({
+      loading: false
     })
   }
 

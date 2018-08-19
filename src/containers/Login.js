@@ -44,7 +44,6 @@ class LoginPage extends React.Component {
         const errorCode = err.code
         const errorMessage = err.message
 
-        console.log(`${errorCode}: ${errorMessage}`)
         message.error(
           <small>{`การเข้าสู่ระบบของคุณผิดพลาด (${errorCode})`}</small>
         )
