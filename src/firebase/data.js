@@ -135,15 +135,15 @@ export const getQuests = currentDate =>
       snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
     )
 
-export const getQuestMember = async (questId) => {
-  let { members } = await firestore
+export const getQuest = async (questId) => {
+  let quest = await firestore
     .collection(`quests`)
     .doc(`${questId}`)
     .get()
     .then(
       doc => (doc.exists ? { ...doc.data() } : null)
     )
-  return members
+  return quest
 }
 
 export const setQuestColor = async (questId, memberUID, scanner) => {
