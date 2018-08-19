@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QRCode from 'qrcode.react'
-
+import * as R from 'ramda'
 import { getAvatar } from '../firebase/storage'
 
 import Section from '../components/Core/Section'
@@ -28,8 +28,10 @@ class Home extends React.Component {
   }
 
   async componentWillMount() {
-    const url = await getAvatar(this.props.userInfo.uid)
-    this.props.setAvatar(url)
+    if (R.path(['userInfo', 'uid'], this.props)) {
+      const url = await getAvatar(this.props.userInfo.uid)
+      this.props.setAvatar(url)
+    }
   }
 
   render() {
@@ -43,13 +45,13 @@ class Home extends React.Component {
               <LogoutButton />
             </ActionContainer>
             <Profile
-              name={userInfo.name}
-              nickName={userInfo.nickName}
-              level={userInfo.level}
-              stdID={userInfo.stdID}
+              name={R.path(['name'], userInfo)}
+              nickName={R.path(['nickName'], userInfo)}
+              level={R.path(['level'], userInfo)}
+              stdID={R.path(['stdID'], userInfo)}
               avatarUrl={this.props.avatarUrl}
-              bio={userInfo.bio}
-              colorCode={userInfo.color_code}
+              bio={R.path(['bio'], userInfo)}
+              colorCode={R.path(['color_code'], userInfo)}
             />
           </div>
         </Section>
