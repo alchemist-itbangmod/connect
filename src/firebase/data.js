@@ -151,6 +151,7 @@ export const setQuestColor = async (questId, memberUID, scanner) => {
   await firestore.collection(`quests`).doc(questId).update({
     colors: firebase.firestore.FieldValue.arrayUnion({
       ...scanner,
+      memberUID,
       createdAt: firebase.firestore.Timestamp.now()
     })
   })
