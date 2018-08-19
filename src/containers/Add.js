@@ -26,7 +26,9 @@ class Add extends React.Component {
     }
   }
   handleChange = event => {
-    this.handleScan(event.target.value)
+    if (event.target.value !== null) {
+      this.setState({ otp: event.target.value })
+    }
   }
 
   submitOtp = async () => {

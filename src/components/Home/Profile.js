@@ -127,6 +127,7 @@ class Profile extends React.Component {
                 placeholder="Student ID"
                 onChange={e => this.setField('stdID', e.target.value)}
                 value={this.state.stdID}
+                maxLength={11}
               />
             ) : null}
             <Input

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar } from 'antd'
+import { Avatar, Spin } from 'antd'
 import { connect } from 'react-redux'
 
 import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
@@ -42,33 +42,41 @@ class Friends extends React.Component {
           </div>
         </Section>
         <section className="friend-list">
-          {this.state.friends.map((friend, index) => (
-            <Section id="friend" key={index}>
-              <div className="container position-relative d-flex align-items-center">
-                <div>
-                  {!friend.avatarUrl ? (
-                    <Avatar size={76} icon="user" src={friend.avatarUrl} />
-                  ) : (
-                    <ConnectAvatar
-                      size={76}
-                      avatarUrl={friend.avatarUrl}
-                      color={getThemeByColor(friend.color).primaryColor}
-                    />
-                  )}
-                </div>
-                <div className="info ml-2">
-                  <h4 className="my-0">{friend.nickName || '-'}</h4>
-                  <p className="small mb-0">
-                    {`${capitalizeFirstLetter(
-                      friend.name
-                    )} / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
-                  </p>
-                  <p className="small m-0">{`"${friend.bio ||
-                    'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
-                </div>
-              </div>
+          {this.state.friends.length > 0 ? (
+            <React.Fragment>
+              {this.state.friends.map((friend, index) => (
+                <Section id="friend" key={index}>
+                  <div className="container position-relative d-flex align-items-center">
+                    <div>
+                      {!friend.avatarUrl ? (
+                        <Avatar size={76} icon="user" src={friend.avatarUrl} />
+                      ) : (
+                        <ConnectAvatar
+                          size={76}
+                          avatarUrl={friend.avatarUrl}
+                          color={getThemeByColor(friend.color).primaryColor}
+                        />
+                      )}
+                    </div>
+                    <div className="info ml-2">
+                      <h4 className="my-0">{friend.nickName || '-'}</h4>
+                      <p className="small mb-0">
+                        {`${capitalizeFirstLetter(
+                          friend.name
+                        )} / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
+                      </p>
+                      <p className="small m-0">{`"${friend.bio ||
+                        'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
+                    </div>
+                  </div>
+                </Section>
+              ))}
+            </React.Fragment>
+          ) : (
+            <Section className="d-flex justify-content-center py-4">
+              <Spin tip="รอสักครู่..." />
             </Section>
-          ))}
+          )}
         </section>
       </Layout>
     )

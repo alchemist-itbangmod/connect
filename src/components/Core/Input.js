@@ -3,8 +3,7 @@ import { Button, Input, Icon } from 'antd'
 
 import Section from './Section'
 
-export const CodeInput = ({otp, handleChange, submitOtp}) => (
-
+export const CodeInput = ({ otp, handleChange, submitOtp }) => (
   <Section id="typing">
     <div className="container text-center position-relative">
       <div className="row">
@@ -14,6 +13,7 @@ export const CodeInput = ({otp, handleChange, submitOtp}) => (
             className="text-center"
             onChange={handleChange}
             value={otp}
+            maxLength={5}
           />
         </div>
         <div className="col-12 mt-2">
