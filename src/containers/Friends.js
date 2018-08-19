@@ -36,7 +36,7 @@ class Friends extends React.Component {
           <div className="container position-relative">
             <div className="row">
               <div className="col">
-                <h3 className="m-0">รายชื่อทั้งหมด</h3>
+                <h3 className="m-0 text-center">รายชื่อทั้งหมด</h3>
               </div>
             </div>
           </div>

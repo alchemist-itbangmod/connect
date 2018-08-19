@@ -20,7 +20,7 @@ class LogoutButton extends React.Component {
   render() {
     return (
       <Button onClick={() => this.logout()} type="dashed">
-        Logout
+        ออกจากระบบ
       </Button>
     )
   }

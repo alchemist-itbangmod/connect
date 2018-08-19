@@ -136,7 +136,7 @@ class Profile extends React.Component {
               onClick={() => this.handleUpdateProfile()}
               loading={this.state.loading}
             >
-              Update Profile
+              แก้ไขข้อมูลส่วนตัว
             </Button>
           </React.Fragment>
         )}

@@ -9,7 +9,7 @@ class EditProfileButton extends React.Component {
   render() {
     return (
       <Button type="dashed" onClick={() => this.props.toggleEdit()}>
-        Edit Profile
+        แก้ไขข้อมูล
       </Button>
     )
   }

@@ -16,6 +16,7 @@ class LoginPage extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = true
     firebase.auth().onAuthStateChanged(async authUser => {
       if (authUser) {
         await this.props.history.push('/')
@@ -33,9 +34,11 @@ class LoginPage extends React.Component {
       .auth()
       .signInWithRedirect(provider)
       .then(() => {
-        this.setState({
-          loading: false
-        })
+        if (this.mounted) {
+          this.setState({
+            loading: false
+          })
+        }
       })
       .catch(err => {
         const errorCode = err.code
@@ -50,6 +53,10 @@ class LoginPage extends React.Component {
           loading: false
         })
       })
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
   }
 
   render() {

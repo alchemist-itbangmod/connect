@@ -4,13 +4,7 @@ import { Upload, Icon, message, Button, Avatar } from 'antd'
 import { uploadAvatar } from '../../firebase/storage'
 import { connect } from 'react-redux'
 import { actions } from '../../redux/modules/home'
-
-const StyledUpload = styled(Upload)`
-  .ant-upload {
-    margin: 0;
-    margin-bottom: 1rem;
-  }
-`
+import ConnectAvatar from '../Core/Avatar'
 
 function isLt2M(file) {
   const isLt2M = file.size / 1024 / 1024 < 2
@@ -52,12 +46,11 @@ class UploadAvatar extends React.Component {
     return (
       <React.Fragment>
         <div className="mb-2">
-          <Avatar
-            size={128}
-            icon="user"
-            src={this.state.imageUrl}
-            className="img-thumbnail"
-          />
+          {!this.state.imageUrl ? (
+            <Avatar size={128} icon="user" src={this.state.imageUrl} />
+          ) : (
+            <ConnectAvatar size={128} avatarUrl={this.state.imageUrl} />
+          )}
         </div>
         <div className="mb-2">
           <input
@@ -72,7 +65,8 @@ class UploadAvatar extends React.Component {
               document.getElementById('upload-file').click()
             }}
           >
-            <Icon type="upload" /> {this.state.loading ? 'Uploading' : 'Upload'}
+            <Icon type="upload" />{' '}
+            {this.state.loading ? 'กำลังอัพโหลด' : 'อัพโหลด'}
           </Button>
         </div>
       </React.Fragment>

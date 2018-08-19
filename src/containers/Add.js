@@ -45,15 +45,16 @@ class Add extends React.Component {
           <div className="container text-center position-relative">
             <div className="row">
               <div className="col">
-                <Button type="dashed" size="large">
-                  ตามล่าลายชื่อ
-                </Button>
+                {/* <Button type="dashed" size="large">
+                  ตามล่ารายชื่อ
+                </Button> */}
+                <h3 className="m-0">ตามล่ารหัสลับ!</h3>
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <Button type="dashed" size="large">
                   ตามล่าสายรหัส
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </Section>

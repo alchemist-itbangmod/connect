@@ -42,7 +42,7 @@ const Navbar = () => (
   <Container>
     <Menu to="/" exact>
       <Icon className="icon" type="user" />
-      Home
+      หน้าแรก
     </Menu>
     {/* <Menu to="/daily-hunt">
       <Icon className="icon" type="book" />
@@ -50,11 +50,11 @@ const Navbar = () => (
     </Menu> */}
     <Menu to="/add">
       <Icon className="icon" type="qrcode" />
-      Add
+      ล่ารายชื่อ
     </Menu>
     <Menu to="/friends">
       <Icon className="icon" type="profile" />
-      List
+      รายชื่อ
     </Menu>
   </Container>
 )
