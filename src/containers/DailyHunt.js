@@ -28,6 +28,24 @@ const Modal = styled(DefaultModal)`
   }
 `
 
+const StatusBox = styled.div`
+  max-width: 20%;
+  width: 100px;
+  height: 50px;
+  display: inline-block;
+  background-color: ${props => props.color};
+`
+
+const colors = []
+
+const StatusList = () => (
+  <Fragment>
+    {
+      colors.map(color => <StatusBox color={color} />)
+    }
+  </Fragment>
+)
+
 const QuestList = ({ quests, handleCamera }) => (
   <Fragment>
     { quests && quests.length > 0 && quests.map(({ id, title, score, members }, index) => (
@@ -75,18 +93,6 @@ QuestList.propTypes = {
   )
 }
 
-const example = {
-  title: 'แก๊งเดฟวะหลับเป่อ',
-  current: 1,
-  score: 3000,
-  members: [
-    {
-      nickname: 'เต้',
-      isScan: false
-    }
-  ]
-}
-
 class DailyHunt extends React.Component {
   state = {
     quests: [],
@@ -130,6 +136,7 @@ class DailyHunt extends React.Component {
     const currentDate = moment('00:00:00', 'hh:mm:ss').toDate()
     const timestamp = firebase.firestore.Timestamp.fromDate(currentDate)
     const quests = await getQuests(timestamp)
+    console.log(quests)
     this.setState({ quests })
   }
 
