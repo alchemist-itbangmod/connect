@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, Spin } from 'antd'
+import { Avatar } from 'antd'
 import { connect } from 'react-redux'
 
 import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
@@ -8,6 +8,7 @@ import Section from '../components/Core/Section'
 import ConnectAvatar from '../components/Core/Avatar'
 import { getRealtimeFriends } from '../firebase/data'
 import { getThemeByColor } from '../App'
+import Loading from '../components/Core/Loading'
 class Friends extends React.Component {
   state = {
     friends: []
@@ -61,9 +62,9 @@ class Friends extends React.Component {
                     <div className="info ml-2">
                       <h4 className="my-0">{friend.nickName || '-'}</h4>
                       <p className="small mb-0">
-                        {`${capitalizeFirstLetter(
-                          friend.name
-                        )} / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
+                        {`${
+                          friend.name ? capitalizeFirstLetter(friend.name) : '-'
+                        } / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
                       </p>
                       <p className="small m-0">{`"${friend.bio ||
                         'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
@@ -74,7 +75,7 @@ class Friends extends React.Component {
             </React.Fragment>
           ) : (
             <Section className="d-flex justify-content-center py-4">
-              <Spin tip="รอสักครู่..." />
+              <Loading />
             </Section>
           )}
         </section>
