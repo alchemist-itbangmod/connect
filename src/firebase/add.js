@@ -47,21 +47,25 @@ export const addFriendWithOTP = async (userUID, otp) => {
 }
 
 export const addQuestMember = async (questId, otp, { userUID, color }) => {
-
-  const questMembers = await getQuestMember(questId)
   const members = await queryUsers(['otp', '==', otp])
 
-  if (members.length > 0 && questMembers.length > 0) {
+  if (members.length > 0) {
     const [ member ] = members
-    const checkMembers = await questMembers.filter(({uid}) => uid === member.uid)
+    const quest = await getQuest(questId)
+    const checkMembers = await quest.members.filter(({uid}) => uid === member.uid)
 
-    const checkColors = await checkMembers.colors > 0 && checkMembers.colors.filter(scanner => scanner && scanner.color === color)
-    if (checkColors > 0) {
-      message.error('You are already scan this member')
+    if (checkMembers && checkMembers.length > 0) {
+      const { colors } = quest
+      const checkColors = await colors.filter(scanner => scanner && scanner.color === color && scanner.memberUID === member.uid)
+      if (checkColors.length > 0) {
+        message.error('Your color are already scan this member')
+      } else {
+        await setQuestColor(questId, member.uid, { userUID, color })
+        generateAndSaveOtpToDB(member.uid)
+        message.success('Done! You have scanned!')
+      }
     } else {
-      await setQuestColor(questId, member.uid, { userUID, color })
-      generateAndSaveOtpToDB(member.uid)
-      message.success('Done! You have scanned!')
+      message.error('Wrong member!')
     }
   } else {
     message.error('no member with this otp')
