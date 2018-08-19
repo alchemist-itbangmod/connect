@@ -38,7 +38,7 @@ export default {
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossOrigin="anonymous"
             />
-            <title>Connect</title>
+            <title>IT Connect 2018 | กิจกรรมตามล่ารหัสลับ</title>
             {renderMeta.styleTags}
           </Head>
           <Body>

@@ -58,12 +58,12 @@ class Home extends React.Component {
         <Section id="otp">
           <div className="container text-center position-relative">
             <QRCode
-              value={this.props.userInfo.otp || '-'}
+              value={R.path(['otp'], userInfo) || '-'}
               style={{ height: 'auto', width: '100%', maxWidth: '180px' }}
             />
             <h6 className="m-0">
               <span className="small">รหัสลับของคุณ (OTP) คือ </span>
-              <u>{this.props.userInfo.otp || '-'}</u>
+              <u>{R.path(['otp'], userInfo) || '-'}</u>
             </h6>
           </div>
         </Section>
