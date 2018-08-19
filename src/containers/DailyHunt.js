@@ -99,8 +99,11 @@ const MemberList = ({ members }) => (
 const QuestList = ({ quests = [], handleCamera }) => (
   <Fragment>
     {
-      quests.length > 0
-        ? quests.map(({ id, title, score, members, colors }) => (
+      (quests && quests.length === 0) && (quests[0] && quests[0].isLoad !== false) ? <LoadingSection /> : <Section className="d-flex justify-content-center py-4">ไม่มีเควสประจำวันจ้า</Section>
+    }
+    {
+      quests.length > 0 && quests[0].isLoad !== false &&
+        quests.map(({ id, title, score, members, colors }) => (
           <Collapse className="mt-3" key={`${id}-${title}`}>
             <Panel
               header={
@@ -129,7 +132,6 @@ const QuestList = ({ quests = [], handleCamera }) => (
             </Panel>
           </Collapse>
         ))
-        : <LoadingSection />
     }
   </Fragment>
 )

@@ -136,18 +136,21 @@ export const getQuests = async currentDate => {
     .then(
       snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
     )
-  const questsWithMembers = await Promise.all(quests
-    .map(async quests => {
-      return {
-        ...quests,
-        members: await Promise.all(await quests.members.map(async (member) => {
-          const { nickName: nickname, bio, color, level } = await getUser(member.uid)
-          const avatarUrl = await getAvatar(member.uid)
-          return { ...member, nickname, bio, color, level, avatarUrl }
-        }))
-      }
-    }))
-  return questsWithMembers
+  if (quests) {
+    const questsWithMembers = await Promise.all(quests
+      .map(async quests => {
+        return {
+          ...quests,
+          members: await Promise.all(await quests.members.map(async (member) => {
+            const { nickName: nickname, bio, color, level } = await getUser(member.uid)
+            const avatarUrl = await getAvatar(member.uid)
+            return { ...member, nickname, bio, color, level, avatarUrl }
+          }))
+        }
+      }))
+    return questsWithMembers
+  }
+  return [{ isLoad: false }]
 }
 
 export const getQuest = async questId => {
