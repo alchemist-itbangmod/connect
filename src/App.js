@@ -95,15 +95,19 @@ class App extends React.Component {
           await firebase.auth().signOut()
           message.error('กรุณาเข้าสู่ระบบด้วย KMUTT Email นะครับ!')
           this.props.history.push('/login')
-          await this.setState({
-            loading: false
-          })
+          setTimeout(() => {
+            this.setState({
+              loading: false
+            })
+          }, 2000)
         }
       } else {
         this.props.history.push('/login')
-        await this.setState({
-          loading: false
-        })
+        setTimeout(() => {
+          this.setState({
+            loading: false
+          })
+        }, 2000)
       }
     })
   }
