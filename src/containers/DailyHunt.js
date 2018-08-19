@@ -38,8 +38,7 @@ const Modal = styled(DefaultModal)`
 `
 
 const StatusBox = styled.div`
-  max-width: 16.6666666667%;
-  width: 100px;
+  width: 16.6666666667%;
   height: 50px;
   background-color: ${props => getThemeByColor(props.color).primaryColor};
 `
@@ -53,13 +52,13 @@ const countColor = R.groupBy(({color}) => {
         : color === colors[3] ? colors[3]
           : color === colors[4] ? colors[4] : colors[5]
 })
-
-const StatusList = ({ value = {} }) => (
+const formatCount = (value, max) => value === max ? <Icon type="check-circle" style={{fontSize: '24px', color: '#fff'}} /> : value
+const StatusList = ({ value = {}, max }) => (
   <div className='d-flex'>
     {
       colors.map((color) => (
         <StatusBox key={`${color}`} color={color} className='d-flex justify-content-center align-items-center'>
-          {(value[color] && value[color].length) || 0}
+          { (value[color] && formatCount(value[color].length, max)) || 0 }
         </StatusBox>
       ))
     }
@@ -108,7 +107,7 @@ const QuestList = ({ quests = [], handleCamera }) => (
                   <h5 className="mb-0">{`${title}`}</h5>
                   <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
                 </div>
-                <StatusList value={countColor(colors)} />
+                <StatusList value={countColor(colors)} max={members.length} />
               </Fragment>
             }
             key="1"
