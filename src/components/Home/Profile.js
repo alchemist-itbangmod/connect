@@ -16,7 +16,7 @@ const getYear = year => {
   else return 62 - year
 }
 
-const isAvailableYear = year => year > 61 || year < 57
+const isAvailableYear = year => year > 61 || year < 55
 
 const isValidSITCode = stdID => stdID.substring(2, 8) === '130500'
 
@@ -39,18 +39,18 @@ class Profile extends React.Component {
       (R.isEmpty(this.props.stdID) || R.isNil(this.props.stdID))
     ) {
       if (isValidStudentID(this.state.stdID)) {
-        message.error('Your Student ID is not valid!')
+        message.error('รหัสนักศึกษาของคุณไม่ถูกต้อง!')
         return
       }
 
       if (!isValidSITCode(this.state.stdID)) {
-        message.error('You are not IT Student!')
+        message.error('คุณไม่ใช่นักศึกษาหลักสูตรเทคโนโลยีสารสนเทศ!')
         return
       }
 
       const year = this.state.stdID.substring(0, 2)
       if (isAvailableYear(+year)) {
-        message.error('Your study level is wrong.')
+        message.error('ชั้นปีของคุณไม่อยู่ในระบบ')
         return
       }
 
@@ -72,7 +72,7 @@ class Profile extends React.Component {
     this.setState({
       loading: true
     })
-    message.loading('Updating Profile...')
+    message.loading('กำลังอัพเดทข้อมูล...')
     await setUser(
       this.props.userInfo.uid,
       R.pick(['nickName', 'bio'], this.state)
@@ -80,7 +80,7 @@ class Profile extends React.Component {
     this.setState({
       loading: false
     })
-    message.success('Finish!')
+    message.success('บันทึกข้อมูลเรียบร้อย!')
   }
 
   render() {

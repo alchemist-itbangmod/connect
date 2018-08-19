@@ -11,7 +11,7 @@ export const addFriendWithOTP = async (userUID, otp) => {
     const friend = friends[0]
 
     if (userUID === friend.uid) {
-      message.error('You can not add yourself')
+      message.error('คุณไม่สามารถเพิ่มรายชื่อที่เป็นตัวเองได้')
       return
     }
 
@@ -20,12 +20,12 @@ export const addFriendWithOTP = async (userUID, otp) => {
     if (!hasThisFriend) {
       setFriend(userUID, friend.uid)
       generateAndSaveOtpToDB(friend.uid)
-      message.success('Done! You have added!')
+      message.success('เรียบร้อย! คุณเพิ่มรายชื่อแล้ว!')
     } else {
-      message.error('You are already have this friend')
+      message.error('คุณมีรายชื่อนี้อยู่ในลิสของคุณอยู่แล้ว')
     }
   } else {
-    message.error('no user with this otp')
+    message.error('ไม่มีรหัสลับนี้อยู่ในระบบ')
     failedAttempts += 1
     if (failedAttempts >= 3) {
       lock = true
@@ -40,7 +40,9 @@ export const addFriendWithOTP = async (userUID, otp) => {
   }
 
   if (lock) {
-    message.error('Too many invalid attempts please try again in a minute')
+    message.error(
+      'คุณกรอกรหัสลับผิดมากเกินไป! กรุณาลองใหม่อีกครั้งหลังจากผ่านไป 1 นาที'
+    )
     return
   }
 }

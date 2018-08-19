@@ -15,7 +15,7 @@ const StyledUpload = styled(Upload)`
 function isLt2M(file) {
   const isLt2M = file.size / 1024 / 1024 < 2
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
+    message.error('รูปของคุณต้องมีขนาดเล็กกว่า 2MB นะครับ!')
   }
   return isLt2M
 }
@@ -34,7 +34,7 @@ class UploadAvatar extends React.Component {
       loading: true,
       imageUrl: null
     })
-    message.loading('Uploading...')
+    message.loading('กำลังอัพโหลดรูปของคุณ...')
     if (!isLt2M(file)) {
       return
     }
@@ -44,7 +44,7 @@ class UploadAvatar extends React.Component {
       loading: false,
       imageUrl: url
     })
-    message.success('Uploaded!')
+    message.success('อัพโหลดเรียบร้อย!')
     this.props.setAvatar(url)
   }
 

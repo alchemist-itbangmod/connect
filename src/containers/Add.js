@@ -21,6 +21,7 @@ class Add extends React.Component {
 
   handleScan = otp => {
     if (otp !== null) {
+      message.success('ได้รหัสลับแล้ว กรุณากดปุ่ม `ยืนยันรหัสลับ` ด้านบน!')
       this.setState({ otp })
     }
   }
@@ -29,7 +30,7 @@ class Add extends React.Component {
   }
 
   submitOtp = async () => {
-    message.loading('Adding...')
+    message.loading('กำลังถอดรหัสลับ...')
     await addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
     this.setState({
       otp: ''

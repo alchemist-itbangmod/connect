@@ -9,7 +9,7 @@ class LogoutButton extends React.Component {
   logout = async () => {
     confirm({
       title: 'Do you want to logout ?',
-      content: `Really ???????? Please don't go!`,
+      content: `Please don't go! Stay with us.`,
       onOk: async () => {
         await firebase.auth().signOut()
         this.props.history.push('/login')

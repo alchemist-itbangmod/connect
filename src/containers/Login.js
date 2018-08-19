@@ -1,7 +1,14 @@
 import React from 'react'
+import styled from 'styled-components'
 import firebase from 'firebase/app'
 import { withRouter } from 'react-static'
-import { Button, message } from 'antd'
+import { Button, message, Icon } from 'antd'
+
+import logo from '../static/logo.png'
+
+const Logo = styled.img`
+  width: 150px;
+`
 
 class LoginPage extends React.Component {
   state = {
@@ -35,7 +42,9 @@ class LoginPage extends React.Component {
         const errorMessage = err.message
 
         console.log(`${errorCode}: ${errorMessage}`)
-        message.error(<small>{`Authentication Failed (${errorCode})`}</small>)
+        message.error(
+          <small>{`การเข้าสู่ระบบของคุณผิดพลาด (${errorCode})`}</small>
+        )
 
         this.setState({
           loading: false
@@ -46,10 +55,12 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div className="container h-100 d-flex justify-content-center align-items-center flex-column">
-        <p className="small">
-          Please Login with your KMUTT Email, Let's enjoy!
-        </p>
+        <div className="mb-3 text-center">
+          <Logo src={logo} alt="IT Connect 2018" />
+        </div>
+        <p className="small">กรุณาเข้าสู่ระบบด้วย KMUTT Email นะครับ : )</p>
         <Button onClick={this.login} size="large" loading={this.state.loading}>
+          <Icon type="google" />
           Login with Google
         </Button>
       </div>
