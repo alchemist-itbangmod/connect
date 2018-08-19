@@ -8,7 +8,7 @@ import Section from '../components/Core/Section'
 import ConnectAvatar from '../components/Core/Avatar'
 import { getRealtimeFriends } from '../firebase/data'
 import { getThemeByColor } from '../App'
-import Loading from '../components/Core/Loading'
+import { LoadingSection } from '../components/Core/Loading'
 class Friends extends React.Component {
   state = {
     friends: []
@@ -73,11 +73,8 @@ class Friends extends React.Component {
                 </Section>
               ))}
             </React.Fragment>
-          ) : (
-            <Section className="d-flex justify-content-center py-4">
-              <Loading />
-            </Section>
-          )}
+          ) : <LoadingSection />
+          }
         </section>
       </Layout>
     )

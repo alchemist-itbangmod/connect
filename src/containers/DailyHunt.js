@@ -13,6 +13,7 @@ import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import Scanner from '../components/Core/Scanner'
 import { CodeInput } from '../components/Core/Input'
+import { LoadingSection } from '../components/Core/Loading'
 
 import { getQuests } from '../firebase/data'
 import { addQuestMember } from '../firebase/add'
@@ -98,35 +99,37 @@ const MemberList = ({ members }) => (
 const QuestList = ({ quests = [], handleCamera }) => (
   <Fragment>
     {
-      quests.map(({ id, title, score, members, colors }) => (
-        <Collapse className="mt-3" key={`${id}-${title}`}>
-          <Panel
-            header={
-              <Fragment>
-                <div className="container mb-2 d-flex align-items-center justify-content-between">
-                  <h5 className="mb-0">{`${title}`}</h5>
-                  <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
+      quests.length > 0
+        ? quests.map(({ id, title, score, members, colors }) => (
+          <Collapse className="mt-3" key={`${id}-${title}`}>
+            <Panel
+              header={
+                <Fragment>
+                  <div className="container mb-2 d-flex align-items-center justify-content-between">
+                    <h5 className="mb-0">{`${title}`}</h5>
+                    <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
+                  </div>
+                  <StatusList value={countColor(colors)} max={members.length} />
+                </Fragment>
+              }
+              key="1"
+              showArrow={false}
+            >
+              <div className="container d-flex align-items-center justify-content-between">
+                <div className="info">
+                  <h6 className="mb-0">{`คะแนน : ${score || 0}`}</h6>
                 </div>
-                <StatusList value={countColor(colors)} max={members.length} />
-              </Fragment>
-            }
-            key="1"
-            showArrow={false}
-          >
-            <div className="container d-flex align-items-center justify-content-between">
-              <div className="info">
-                <h6 className="mb-0">{`คะแนน : ${score || 0}`}</h6>
+                <div className="info">
+                  <h6 className="mb-0">{`จำนวนทั้งหมด ${members.length}`}</h6>
+                </div>
               </div>
-              <div className="info">
-                <h6 className="mb-0">{`จำนวนทั้งหมด ${members.length}`}</h6>
+              <div className="info text-center pt-3">
+                <MemberList members={members} />
               </div>
-            </div>
-            <div className="info text-center pt-3">
-              <MemberList members={members} />
-            </div>
-          </Panel>
-        </Collapse>
-      ))
+            </Panel>
+          </Collapse>
+        ))
+        : <LoadingSection />
     }
   </Fragment>
 )
