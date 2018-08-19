@@ -86,6 +86,7 @@ export const getRealtimeFriends = async (uid, callback) =>
   firestore
     .collection(`friends`)
     .where('userUID', '==', uid)
+    .orderBy('createdAt', 'desc')
     .onSnapshot(async snapshot => {
       if (snapshot.empty) {
         callback(null)
