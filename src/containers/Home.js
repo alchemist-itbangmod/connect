@@ -49,6 +49,7 @@ class Home extends React.Component {
               stdID={userInfo.stdID}
               avatarUrl={this.props.avatarUrl}
               bio={userInfo.bio}
+              colorCode={userInfo.color_code}
             />
           </div>
         </Section>

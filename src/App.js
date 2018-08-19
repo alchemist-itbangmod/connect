@@ -1,6 +1,6 @@
 import React from 'react'
-import { Router, Switch, Route, withRouter } from 'react-static'
-import { injectGlobal } from 'styled-components'
+import { Switch, Route, withRouter } from 'react-static'
+import { injectGlobal, ThemeProvider } from 'styled-components'
 import { hot } from 'react-hot-loader'
 import firebase from 'firebase/app'
 import { connect } from 'react-redux'
@@ -38,6 +38,23 @@ injectGlobal`
     background: #dfeae9;
   }
 `
+
+const themes = {
+  pink: {
+    primaryColor: '#ff0000'
+  },
+  none: {
+    primaryColor: '#ff0000'
+  }
+}
+
+const getThemeByColor = color => {
+  console.log(color)
+  if (color) {
+    return themes[color]
+  }
+  return themes['none']
+}
 
 class App extends React.Component {
   state = {
@@ -79,27 +96,27 @@ class App extends React.Component {
     await getRealtimeUser(authUser.uid, user => this.props.setUser(user))
   }
 
-  handleNonLoggedIn() {
-    this.setState({ authUser: null })
-  }
-
   render() {
     return (
-      <React.Fragment>
-        {this.state.loading ? (
-          <Loading />
-        ) : (
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/identify" component={Identify} />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/daily-hunt" component={DailyHunt} />
-            <Route exact path="/add" component={Add} />
-            <Route exact path="/friends" component={Friends} />
-            <Route component={NotFound} />
-          </Switch>
-        )}
-      </React.Fragment>
+      <ThemeProvider
+        theme={getThemeByColor(R.path(['userInfo', 'color'], this.props))}
+      >
+        <React.Fragment>
+          {this.state.loading ? (
+            <Loading />
+          ) : (
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/identify" component={Identify} />
+              <Route exact path="/" component={Home} />
+              {/* <Route exact path="/daily-hunt" component={DailyHunt} /> */}
+              <Route exact path="/add" component={Add} />
+              <Route exact path="/friends" component={Friends} />
+              <Route component={NotFound} />
+            </Switch>
+          )}
+        </React.Fragment>
+      </ThemeProvider>
     )
   }
 }
@@ -108,7 +125,9 @@ export default R.compose(
   hot(module),
   withRouter,
   connect(
-    null,
+    state => ({
+      userInfo: state.user.userInfo
+    }),
     {
       setUser: userActions.setUser
     }

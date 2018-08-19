@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
+import ConnectAvatar from '../components/Core/Avatar'
 import { getRealtimeFriends } from '../firebase/data'
 class Friends extends React.Component {
   state = {
@@ -43,7 +44,13 @@ class Friends extends React.Component {
           {this.state.friends.map((friend, index) => (
             <Section id="friend" key={index}>
               <div className="container position-relative d-flex align-items-center">
-                <Avatar size={64} icon="user" src={friend.avatarUrl || false} />
+                <div>
+                  {!friend.avatarUrl ? (
+                    <Avatar size={76} icon="user" src={friend.avatarUrl} />
+                  ) : (
+                    <ConnectAvatar size={76} avatarUrl={friend.avatarUrl} />
+                  )}
+                </div>
                 <div className="info ml-2">
                   <h4 className="my-0">{friend.nickName || '-'}</h4>
                   <p className="small mb-0">
@@ -51,7 +58,7 @@ class Friends extends React.Component {
                       friend.name
                     )} / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
                   </p>
-                  <p className="small m-0">{`Bio: "${friend.bio ||
+                  <p className="small m-0">{`"${friend.bio ||
                     'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
                 </div>
               </div>

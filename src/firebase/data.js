@@ -13,13 +13,14 @@ const getDataFromSnapshotQuery = snapshot => {
 }
 
 const userInfoSchema = [
-  'color',
   'name',
   'nickName',
   'level',
   'uid',
   'bio',
-  'stdID'
+  'stdID',
+  'color',
+  'color_code'
 ]
 
 // User Method

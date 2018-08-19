@@ -3,6 +3,7 @@ import { Avatar, Button, Input, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
 
+import ConnectAvatar from '../Core/Avatar'
 import { capitalizeFirstLetter } from '../../libs/capitalize-first-letter'
 import UploadAvatar from './UploadAvatar'
 import { setUser } from '../../firebase/data'
@@ -82,36 +83,37 @@ class Profile extends React.Component {
   }
 
   render() {
-    const { stdID, name, level, nickName, bio } = this.props
+    const { stdID, name, level, nickName, bio, colorCode } = this.props
     return (
       <React.Fragment>
         {!this.props.isEdit ? (
           <React.Fragment>
-            <Avatar
-              size={128}
-              icon="user"
-              src={this.props.avatarUrl}
-              className="img-thumbnail"
-            />
+            <div className="text-center">
+              {!this.props.avatarUrl ? (
+                <Avatar size={128} icon="user" src={this.props.avatarUrl} />
+              ) : (
+                <ConnectAvatar size={128} avatarUrl={this.props.avatarUrl} />
+              )}
+            </div>
             <h2 className="my-1">{nickName || '-'}</h2>
             <p className="small mb-0 mt-2">{`รหัสนักศึกษา: ${stdID || '-'}`}</p>
-            <p className="mb-2">{`${capitalizeFirstLetter(
-              name
-            )} / ชั้นปี: ${level || '-'}`}</p>
+            <p className="mb-2">
+              {`${capitalizeFirstLetter(name)}, ชั้นปี: ${level || '-'}, `}
+              <b>{colorCode}</b>
+            </p>
             <p className="small mb-2">{bio}</p>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <UploadAvatar avatarUrl={this.props.avatarUrl} />
-            <Input
-              className="mb-1"
-              placeholder="Student ID"
-              disabled={
-                !R.isEmpty(this.props.stdID) && !R.isNil(this.props.stdID)
-              }
-              onChange={e => this.setField('stdID', e.target.value)}
-              value={this.state.stdID}
-            />
+            {R.isEmpty(this.props.stdID) || R.isNil(this.props.stdID) ? (
+              <Input
+                className="mb-1"
+                placeholder="Student ID"
+                onChange={e => this.setField('stdID', e.target.value)}
+                value={this.state.stdID}
+              />
+            ) : null}
             <Input
               className="mb-1"
               placeholder="Nickname"

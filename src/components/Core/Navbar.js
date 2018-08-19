@@ -44,10 +44,10 @@ const Navbar = () => (
       <Icon className="icon" type="user" />
       Home
     </Menu>
-    <Menu to="/daily-hunt">
+    {/* <Menu to="/daily-hunt">
       <Icon className="icon" type="book" />
       Daily Hunt
-    </Menu>
+    </Menu> */}
     <Menu to="/add">
       <Icon className="icon" type="qrcode" />
       Add
