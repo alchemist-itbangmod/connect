@@ -16,8 +16,8 @@ import { getQuests } from '../firebase/data'
 import { addQuestMember } from '../firebase/add'
 
 const Nickname = styled.h3`
-  margin: .3em 0;
-  text-decoration-line: ${props => props.isScan ? 'line-through' : 'un-set'};
+  margin: 0.3em 0;
+  text-decoration-line: ${props => (props.isScan ? 'line-through' : 'un-set')};
 `
 const Panel = Collapse.Panel
 
@@ -46,6 +46,18 @@ const StatusList = () => (
   </Fragment>
 )
 
+const MemberList = ({ members }) => (
+  <Fragment>
+    {
+      members.map(({ nickname, isScan }, index) => (
+        <Nickname key={`${nickname}-${index}`} isScan={isScan}>
+          {nickname}
+        </Nickname>
+      ))
+    }
+  </Fragment>
+)
+
 const QuestList = ({ quests, handleCamera }) => (
   <Fragment>
     { quests && quests.length > 0 && quests.map(({ id, title, score, members }, index) => (
@@ -65,19 +77,13 @@ const QuestList = ({ quests, handleCamera }) => (
               <h6 className="mb-0">{`คะแนน : ${score}`}</h6>
             </div>
             <div className="info text-center">
-              <h6 className="mb-0">{`ทั้งหมด ${members.length} คน`}</h6>
+              <MemberList members={members} />
             </div>
-          </div>
-          <div className="info text-center">
-            {
-              members.map(({ nickname, isScan }, index) => (
-                <Nickname key={`${nickname}-${index}`} isScan={isScan}>{nickname}</Nickname>
-              ))
-            }
           </div>
         </Panel>
       </Collapse>
-    ))}
+    ))
+    }
   </Fragment>
 )
 
@@ -113,7 +119,7 @@ class DailyHunt extends React.Component {
     })
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       otp: event.target.value
     })
@@ -126,7 +132,6 @@ class DailyHunt extends React.Component {
   }
 
   handleScan = otp => {
-    console.log(otp)
     if (otp) {
       this.setState({ otp })
     }
@@ -159,7 +164,11 @@ class DailyHunt extends React.Component {
           onCancel={this.handleCancel}
           footer={null}
         >
-          <CodeInput otp={otp} handleChange={this.handleChange} submitOtp={this.submitOtp} />
+          <CodeInput
+            otp={otp}
+            handleChange={this.handleChange}
+            submitOtp={this.submitOtp}
+          />
           <Scanner onScan={this.handleScan} />
         </Modal>
       </Layout>

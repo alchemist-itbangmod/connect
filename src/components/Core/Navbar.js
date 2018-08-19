@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon, Badge } from 'antd'
+import { Icon } from 'antd'
 import { NavLink } from 'react-static'
 
 const Container = styled.nav`
@@ -15,7 +15,7 @@ const Container = styled.nav`
 `
 
 const Menu = styled(NavLink)`
-  color: #307375;
+  color: ${props => props.theme.primaryColor};
   font-size: 0.70711rem;
   letter-spacing: 0.0075rem;
   line-height: 1;
@@ -24,6 +24,13 @@ const Menu = styled(NavLink)`
   text-align: center;
   position: relative;
   transition: all 0.3s;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+    color: ${props => props.theme.primaryColor};
+  }
 
   // Active Mode
   opacity: 0.4;
@@ -42,19 +49,19 @@ const Navbar = () => (
   <Container>
     <Menu to="/" exact>
       <Icon className="icon" type="user" />
-      Home
+      หน้าแรก
     </Menu>
-    <Menu to="/daily-hunt">
+    {/* <Menu to="/daily-hunt">
       <Icon className="icon" type="book" />
       Daily Hunt
-    </Menu>
+    </Menu> */}
     <Menu to="/add">
       <Icon className="icon" type="qrcode" />
-      Add
+      ล่ารายชื่อ
     </Menu>
     <Menu to="/friends">
       <Icon className="icon" type="profile" />
-      List
+      รายชื่อ
     </Menu>
   </Container>
 )

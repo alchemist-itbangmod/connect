@@ -1,8 +1,10 @@
 import React from 'react'
+import { withTheme } from 'styled-components'
 import { Avatar, Button, Input, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
 
+import ConnectAvatar from '../Core/Avatar'
 import { capitalizeFirstLetter } from '../../libs/capitalize-first-letter'
 import UploadAvatar from './UploadAvatar'
 import { setUser } from '../../firebase/data'
@@ -14,7 +16,7 @@ const getYear = year => {
   else return 62 - year
 }
 
-const isAvailableYear = year => year > 61 || year < 57
+const isAvailableYear = year => year > 61 || year < 55
 
 const isValidSITCode = stdID => stdID.substring(2, 8) === '130500'
 
@@ -28,7 +30,17 @@ class Profile extends React.Component {
     bio: this.props.bio || ''
   }
 
-  setField = (field, value) => this.setState({ [field]: value })
+  setField = (field, value) => {
+    if (field === 'nickName' && value.length > 20) {
+      message.error('กรอกชื่อเล่นยาวกว่านี้ไม่ได้นะ')
+      return
+    }
+    if (field === 'bio' && value.length > 144) {
+      message.error('กรอก Bio ยาวกว่านี้ไม่ได้นะ! ไม่เกิน 144 ตัวอักษร')
+      return
+    }
+    this.setState({ [field]: value })
+  }
 
   handleUpdateProfile = async () => {
     // Update Student ID
@@ -37,18 +49,18 @@ class Profile extends React.Component {
       (R.isEmpty(this.props.stdID) || R.isNil(this.props.stdID))
     ) {
       if (isValidStudentID(this.state.stdID)) {
-        message.error('Your Student ID is not valid!')
+        message.error('รหัสนักศึกษาของคุณไม่ถูกต้อง!')
         return
       }
 
       if (!isValidSITCode(this.state.stdID)) {
-        message.error('You are not IT Student!')
+        message.error('คุณไม่ใช่นักศึกษาหลักสูตรเทคโนโลยีสารสนเทศ!')
         return
       }
 
       const year = this.state.stdID.substring(0, 2)
       if (isAvailableYear(+year)) {
-        message.error('Your study level is wrong.')
+        message.error('ชั้นปีของคุณไม่อยู่ในระบบ')
         return
       }
 
@@ -70,7 +82,7 @@ class Profile extends React.Component {
     this.setState({
       loading: true
     })
-    message.loading('Updating Profile...')
+    message.loading('กำลังอัพเดทข้อมูล...')
     await setUser(
       this.props.userInfo.uid,
       R.pick(['nickName', 'bio'], this.state)
@@ -78,40 +90,47 @@ class Profile extends React.Component {
     this.setState({
       loading: false
     })
-    message.success('Finish!')
+    message.success('บันทึกข้อมูลเรียบร้อย!')
   }
 
   render() {
-    const { stdID, name, level, nickName, bio } = this.props
+    const { stdID, name, level, nickName, bio, colorCode } = this.props
     return (
       <React.Fragment>
         {!this.props.isEdit ? (
           <React.Fragment>
-            <Avatar
-              size={128}
-              icon="user"
-              src={this.props.avatarUrl}
-              className="img-thumbnail"
-            />
+            <div className="text-center">
+              {!this.props.avatarUrl ? (
+                <Avatar size={128} icon="user" src={this.props.avatarUrl} />
+              ) : (
+                <ConnectAvatar
+                  size={128}
+                  avatarUrl={this.props.avatarUrl}
+                  color={this.props.theme.primaryColor}
+                />
+              )}
+            </div>
             <h2 className="my-1">{nickName || '-'}</h2>
             <p className="small mb-0 mt-2">{`รหัสนักศึกษา: ${stdID || '-'}`}</p>
-            <p className="mb-2">{`${capitalizeFirstLetter(
-              name
-            )} / ชั้นปี: ${level || '-'}`}</p>
+            <p className="mb-2">
+              {`${name ? capitalizeFirstLetter(name) : '-'}, ชั้นปี: ${level ||
+                '-'}, `}
+              <b>{colorCode}</b>
+            </p>
             <p className="small mb-2">{bio}</p>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <UploadAvatar avatarUrl={this.props.avatarUrl} />
-            <Input
-              className="mb-1"
-              placeholder="Student ID"
-              disabled={
-                !R.isEmpty(this.props.stdID) && !R.isNil(this.props.stdID)
-              }
-              onChange={e => this.setField('stdID', e.target.value)}
-              value={this.state.stdID}
-            />
+            {R.isEmpty(this.props.stdID) || R.isNil(this.props.stdID) ? (
+              <Input
+                className="mb-1"
+                placeholder="Student ID"
+                onChange={e => this.setField('stdID', e.target.value)}
+                value={this.state.stdID}
+                maxLength={11}
+              />
+            ) : null}
             <Input
               className="mb-1"
               placeholder="Nickname"
@@ -129,7 +148,7 @@ class Profile extends React.Component {
               onClick={() => this.handleUpdateProfile()}
               loading={this.state.loading}
             >
-              Update Profile
+              แก้ไขข้อมูลส่วนตัว
             </Button>
           </React.Fragment>
         )}
@@ -138,10 +157,13 @@ class Profile extends React.Component {
   }
 }
 
-export default connect(
-  state => ({
-    isEdit: state.home.isEdit,
-    userInfo: state.user.userInfo
-  }),
-  null
+export default R.compose(
+  withTheme,
+  connect(
+    state => ({
+      isEdit: state.home.isEdit,
+      userInfo: state.user.userInfo
+    }),
+    null
+  )
 )(Profile)

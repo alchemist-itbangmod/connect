@@ -13,13 +13,14 @@ const getDataFromSnapshotQuery = snapshot => {
 }
 
 const userInfoSchema = [
-  'color',
   'name',
   'nickName',
   'level',
   'uid',
   'bio',
-  'stdID'
+  'stdID',
+  'color',
+  'color_code'
 ]
 
 // User Method
@@ -85,6 +86,7 @@ export const getRealtimeFriends = async (uid, callback) =>
   firestore
     .collection(`friends`)
     .where('userUID', '==', uid)
+    .orderBy('createdAt', 'desc')
     .onSnapshot(async snapshot => {
       if (snapshot.empty) {
         callback(null)

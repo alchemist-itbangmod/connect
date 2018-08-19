@@ -21,15 +21,18 @@ class Add extends React.Component {
 
   handleScan = otp => {
     if (otp !== null) {
+      message.success('ได้รหัสลับแล้ว กรุณากดปุ่ม `ยืนยันรหัสลับ` ด้านบน!')
       this.setState({ otp })
     }
   }
   handleChange = event => {
-    this.handleScan(event.target.value)
+    if (event.target.value !== null) {
+      this.setState({ otp: event.target.value })
+    }
   }
 
   submitOtp = async () => {
-    message.loading('Adding...')
+    message.loading('กำลังถอดรหัสลับ...')
     await addFriendWithOTP(this.props.userInfo.uid, this.state.otp)
     this.setState({
       otp: ''
@@ -44,15 +47,16 @@ class Add extends React.Component {
           <div className="container text-center position-relative">
             <div className="row">
               <div className="col">
-                <Button type="dashed" size="large">
-                  ตามล่าลายชื่อ
-                </Button>
+                {/* <Button type="dashed" size="large">
+                  ตามล่ารายชื่อ
+                </Button> */}
+                <h3 className="m-0">ตามล่ารหัสลับ!</h3>
               </div>
-              <div className="col">
+              {/* <div className="col">
                 <Button type="dashed" size="large">
                   ตามล่าสายรหัส
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </Section>

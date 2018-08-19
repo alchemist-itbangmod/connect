@@ -4,18 +4,12 @@ import { Upload, Icon, message, Button, Avatar } from 'antd'
 import { uploadAvatar } from '../../firebase/storage'
 import { connect } from 'react-redux'
 import { actions } from '../../redux/modules/home'
-
-const StyledUpload = styled(Upload)`
-  .ant-upload {
-    margin: 0;
-    margin-bottom: 1rem;
-  }
-`
+import ConnectAvatar from '../Core/Avatar'
 
 function isLt2M(file) {
-  const isLt2M = file.size / 1024 / 1024 < 2
+  const isLt2M = file.size / 1024 / 1024 < 4
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!')
+    message.error('รูปของคุณต้องมีขนาดเล็กกว่า 4MB นะครับ!')
   }
   return isLt2M
 }
@@ -34,7 +28,7 @@ class UploadAvatar extends React.Component {
       loading: true,
       imageUrl: null
     })
-    message.loading('Uploading...')
+    message.loading('กำลังอัพโหลดรูปของคุณ...')
     if (!isLt2M(file)) {
       return
     }
@@ -44,7 +38,7 @@ class UploadAvatar extends React.Component {
       loading: false,
       imageUrl: url
     })
-    message.success('Uploaded!')
+    message.success('อัพโหลดเรียบร้อย!')
     this.props.setAvatar(url)
   }
 
@@ -52,12 +46,11 @@ class UploadAvatar extends React.Component {
     return (
       <React.Fragment>
         <div className="mb-2">
-          <Avatar
-            size={128}
-            icon="user"
-            src={this.state.imageUrl}
-            className="img-thumbnail"
-          />
+          {!this.state.imageUrl ? (
+            <Avatar size={128} icon="user" src={this.state.imageUrl} />
+          ) : (
+            <ConnectAvatar size={128} avatarUrl={this.state.imageUrl} />
+          )}
         </div>
         <div className="mb-2">
           <input
@@ -72,7 +65,8 @@ class UploadAvatar extends React.Component {
               document.getElementById('upload-file').click()
             }}
           >
-            <Icon type="upload" /> {this.state.loading ? 'Uploading' : 'Upload'}
+            <Icon type="upload" />{' '}
+            {this.state.loading ? 'กำลังอัพโหลด' : 'อัพโหลด'}
           </Button>
         </div>
       </React.Fragment>

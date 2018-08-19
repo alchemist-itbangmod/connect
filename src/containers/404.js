@@ -2,7 +2,7 @@ import React from 'react'
 //
 
 export default () => (
-  <div>
-    <h1>404 - Oh no's! We couldn't find that page :(</h1>
+  <div className="d-flex justify-content-center align-items-center">
+    <h1>404 | เข้ามาผิดหน้าแล้วรู้ไหม?</h1>
   </div>
 )

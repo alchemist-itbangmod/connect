@@ -38,10 +38,37 @@ export default {
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
               crossOrigin="anonymous"
             />
-            <title>Connect</title>
+            <title>IT Connect 2018 | กิจกรรมตามล่ารหัสลับ</title>
             {renderMeta.styleTags}
           </Head>
-          <Body>{children}</Body>
+          <Body>
+            {children}
+
+            <script
+              src="https://cdn.ravenjs.com/3.26.4/raven.min.js"
+              crossOrigin="anonymous"
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                Raven.config('https://7a8d4d33f145426d9eb80b930ac0ea8e@sentry.io/1264885').install()
+              `
+              }}
+            />
+            <script
+              async
+              src="https://www.googletagmanager.com/gtag/js?id=UA-82920412-5"
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+              window.dataLayer = window.dataLayer || []; function gtag()
+              {dataLayer.push(arguments)}
+              gtag('js', new Date()); gtag('config', 'UA-82920412-5');
+              `
+              }}
+            />
+          </Body>
         </Html>
       )
     }
