@@ -6,14 +6,6 @@ import { connect } from 'react-redux'
 import { actions } from '../../redux/modules/home'
 import ConnectAvatar from '../Core/Avatar'
 
-function isLt2M(file) {
-  const isLt2M = file.size / 1024 / 1024 < 4
-  if (!isLt2M) {
-    message.error('รูปของคุณต้องมีขนาดเล็กกว่า 4MB นะครับ!')
-  }
-  return isLt2M
-}
-
 class UploadAvatar extends React.Component {
   state = {
     loading: false,
@@ -29,9 +21,6 @@ class UploadAvatar extends React.Component {
       imageUrl: null
     })
     message.loading('กำลังอัพโหลดรูปของคุณ...')
-    if (!isLt2M(file)) {
-      return
-    }
     const uploadObj = await uploadAvatar(this.props.userInfo.uid, file)
     const url = await uploadObj.ref.getDownloadURL().then(url => url)
     this.setState({
