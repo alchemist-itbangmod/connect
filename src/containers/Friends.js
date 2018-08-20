@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Avatar } from 'antd'
+import { Avatar, Button } from 'antd'
 import { connect } from 'react-redux'
+import { Router } from 'react-router'
 
 import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
 import Layout from '../components/Core/Layout'
@@ -18,6 +19,9 @@ const FriendItem = styled.div`
 class Friends extends React.Component {
   state = {
     friends: []
+  }
+  toAddPage = () => {
+    this.props.history.push('/add')
   }
   async componentDidMount() {
     this.mounted = true
