@@ -46,67 +46,94 @@ const StatusBox = styled.div`
 
 const colors = ['blue', 'green', 'yellow', 'orange', 'pink', 'red']
 
-const countColor = R.groupBy(({color}) => {
-  return color === colors[0] ? colors[0]
-    : color === colors[1] ? colors[1]
-      : color === colors[2] ? colors[2]
-        : color === colors[3] ? colors[3]
-          : color === colors[4] ? colors[4] : colors[5]
+const countColor = R.groupBy(({ color }) => {
+  return color === colors[0]
+    ? colors[0]
+    : color === colors[1]
+      ? colors[1]
+      : color === colors[2]
+        ? colors[2]
+        : color === colors[3]
+          ? colors[3]
+          : color === colors[4]
+            ? colors[4]
+            : colors[5]
 })
-const formatCount = (value, max) => value === max ? <Icon type="check-circle" style={{fontSize: '24px', color: '#fff'}} /> : value
+const formatCount = (value, max) =>
+  value === max ? (
+    <Icon type="check-circle" style={{ fontSize: '24px', color: '#fff' }} />
+  ) : (
+    value
+  )
 const StatusList = ({ value = {}, max }) => (
-  <div className='d-flex'>
-    {
-      colors.map((color) => (
-        <StatusBox key={`${color}`} color={color} className='d-flex justify-content-center align-items-center'>
-          { (value[color] && formatCount(value[color].length, max)) || 0 }
-        </StatusBox>
-      ))
-    }
+  <div className="d-flex">
+    {colors.map(color => (
+      <StatusBox
+        key={`${color}`}
+        color={color}
+        className="d-flex justify-content-center align-items-center"
+      >
+        {(value[color] && formatCount(value[color].length, max)) || 0}
+      </StatusBox>
+    ))}
   </div>
 )
 
 const MemberList = ({ members }) => (
   <Fragment>
-    {
-      members.map(({ nickname, color, bio, avatarUrl }, index) => (
-        <Section key={`${nickname}-${index}`}>
-          <div className="container">
-            <div className="row">
-              <div className='col-4 d-flex align-items-center'>
-                {!avatarUrl ? (
-                  <Avatar size={45} icon="user" src={avatarUrl} />
-                ) : (
-                  <ConnectAvatar
-                    size={45}
-                    avatarUrl={avatarUrl}
-                    color={getThemeByColor(color).primaryColor}
-                  />
-                )}
-              </div>
-              <div className="col-8 pl-0">
-                <Nickname className="my-0">{nickname || '-'}</Nickname>
-                <p className="small m-0">{`"${bio || 'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
-              </div>
+    {members.map(({ nickname, color, bio, avatarUrl }, index) => (
+      <Section key={`${nickname}-${index}`}>
+        <div className="container">
+          <div className="row">
+            <div className="col-4 d-flex align-items-center">
+              {!avatarUrl ? (
+                <Avatar
+                  size={45}
+                  icon="user"
+                  src={avatarUrl}
+                  style={{ margin: '0 auto' }}
+                />
+              ) : (
+                <ConnectAvatar
+                  size={45}
+                  avatarUrl={avatarUrl}
+                  color={getThemeByColor(color).primaryColor}
+                />
+              )}
+            </div>
+            <div className="col-8 pl-0">
+              <Nickname className="my-0">{nickname || '-'}</Nickname>
+              <p className="small m-0">{`"${bio ||
+                'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
             </div>
           </div>
-        </Section>
-      ))
-    }
+        </div>
+      </Section>
+    ))}
   </Fragment>
 )
 
 const QuestList = ({ quests = [], handleCamera }) => (
   <Fragment>
-    {
-      (quests && quests.length === 0) ? <LoadingSection /> : quests.length > 0 && quests[0].isLoad === false ? <Section className="d-flex justify-content-center py-4">ไม่มีเควสประจำวันจ้า</Section> : quests.map(({ id, title, score, members, colors }) => (
+    {quests && quests.length === 0 ? (
+      <LoadingSection />
+    ) : quests.length > 0 && quests[0].isLoad === false ? (
+      <Section className="d-flex justify-content-center py-4">
+        ไม่มีเควสประจำวันจ้า
+      </Section>
+    ) : (
+      quests.map(({ id, title, score, members, colors }) => (
         <Collapse className="mt-3" key={`${id}-${title}`}>
           <Panel
             header={
               <Fragment>
                 <div className="container mb-2 d-flex align-items-center justify-content-between">
                   <h5 className="mb-0">{`${title}`}</h5>
-                  <Icon onClick={() => handleCamera(id)} type="scan" style={{ fontSize: 24 }} />
+                  <Icon
+                    onClick={() => handleCamera(id)}
+                    type="scan"
+                    style={{ fontSize: 24 }}
+                  />
                 </div>
                 <StatusList value={countColor(colors)} max={members.length} />
               </Fragment>
@@ -128,7 +155,7 @@ const QuestList = ({ quests = [], handleCamera }) => (
           </Panel>
         </Collapse>
       ))
-    }
+    )}
   </Fragment>
 )
 
@@ -173,7 +200,9 @@ class DailyHunt extends React.Component {
   submitOtp = () => {
     message.loading('กำลังถอดรหัสลับ...')
     const { questId, otp } = this.state
-    const { userInfo: { uid: userUID, color } } = this.props
+    const {
+      userInfo: { uid: userUID, color }
+    } = this.props
     addQuestMember(questId, otp, { userUID, color })
   }
 
