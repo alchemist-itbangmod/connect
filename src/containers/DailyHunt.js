@@ -185,8 +185,13 @@ class DailyHunt extends React.Component {
   componentDidMount = async () => {
     const currentDate = moment('00:00:00', 'hh:mm:ss').toDate()
     const timestamp = firebase.firestore.Timestamp.fromDate(currentDate)
-    const quests = await getQuests(timestamp)
-    this.setState({ quests })
+    await getQuests(timestamp, quests => {
+      if (quests === null) {
+        this.setState({ quests: [{ isLoad: false }] })
+      } else {
+        this.setState({ quests })
+      }
+    })
   }
 
   render() {
