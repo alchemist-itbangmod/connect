@@ -52,7 +52,7 @@ class UploadAvatar extends React.Component {
             <ConnectAvatar size={128} avatarUrl={this.state.imageUrl} />
           )}
         </div>
-        <div className="mb-2">
+        <div className="mb-3">
           <input
             type="file"
             id="upload-file"

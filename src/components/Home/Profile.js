@@ -138,17 +138,17 @@ class Profile extends React.Component {
               value={this.state.nickName}
             />
             <Input.TextArea
-              className="mb-1"
+              className="mb-3"
               placeholder="Bio"
               rows={4}
               onChange={e => this.setField('bio', e.target.value)}
               value={this.state.bio}
             />
             <Button
-              onClick={() => this.handleUpdateProfile()}
+              onClick={() => this.handleUpdateProfile(true)}
               loading={this.state.loading}
             >
-              แก้ไขข้อมูลส่วนตัว
+              บันทึกข้อมูลส่วนตัว
             </Button>
           </React.Fragment>
         )}
