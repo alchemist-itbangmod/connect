@@ -4,6 +4,7 @@ import { Avatar, Button, Input, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
 
+import { actions } from '../../redux/modules/home'
 import ConnectAvatar from '../Core/Avatar'
 import { capitalizeFirstLetter } from '../../libs/capitalize-first-letter'
 import UploadAvatar from './UploadAvatar'
@@ -74,6 +75,7 @@ class Profile extends React.Component {
             ...R.pick(['stdID'], this.state),
             level: getYear(year)
           })
+          this.props.toggleEdit()
         }
       })
     }
@@ -164,6 +166,8 @@ export default R.compose(
       isEdit: state.home.isEdit,
       userInfo: state.user.userInfo
     }),
-    null
+    {
+      toggleEdit: actions.toggleEdit
+    }
   )
 )(Profile)
