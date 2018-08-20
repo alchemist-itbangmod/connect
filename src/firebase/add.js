@@ -1,6 +1,7 @@
-import { queryUsers, getFriend, setFriend } from './data'
-import { generateAndSaveOtpToDB } from './login'
 import { message } from 'antd'
+
+import { queryUsers, getFriend, setFriend, getQuest, setQuestColor } from './data'
+import { generateAndSaveOtpToDB } from './login'
 let failedAttempts = 0
 let remainingTime = 0
 let lock = false
@@ -43,6 +44,48 @@ export const addFriendWithOTP = async (userUID, otp) => {
     message.error(
       'คุณกรอกรหัสลับผิดมากเกินไป! กรุณาลองใหม่อีกครั้งหลังจากผ่านไป 1 นาที'
     )
+    return
+  }
+}
+
+export const addQuestMember = async (questId, otp, { userUID, color }) => {
+  const members = await queryUsers(['otp', '==', otp])
+
+  if (members.length > 0) {
+    const [ member ] = members
+    const quest = await getQuest(questId)
+    const checkMembers = await quest.members.filter(({uid}) => uid === member.uid)
+
+    if (checkMembers && checkMembers.length > 0) {
+      const { colors } = quest
+      const checkColors = await colors.filter(scanner => scanner && scanner.color === color && scanner.memberUID === member.uid)
+      if (checkColors.length > 0) {
+        message.error('สีของคุณแสกนคนนี้ไปแล้ว T^T')
+      } else {
+        await setQuestColor(questId, member.uid, { userUID, color })
+        generateAndSaveOtpToDB(member.uid)
+        message.success('แสกนสำเร็จ!')
+      }
+    } else {
+      message.error('คนนี้ไม่ได้เป็นสมาชิกแก๊งนี้!')
+    }
+  } else {
+    message.error('ไม่มีสมาชิกที่ใช้ OTP นี้')
+    failedAttempts += 1
+    if (failedAttempts >= 3) {
+      lock = true
+      remainingTime = 10
+      const interval = setInterval(() => remainingTime--, 1000)
+      setTimeout(() => {
+        failedAttempts = 0
+        lock = false
+        clearInterval(interval)
+      }, remainingTime * 1000)
+    }
+  }
+
+  if (lock) {
+    message.error('Too many invalid attempts please try again in a minute')
     return
   }
 }

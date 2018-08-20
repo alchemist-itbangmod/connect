@@ -128,11 +128,48 @@ export const setFriend = async (userUID, friendUID) => {
   })
 }
 
-export const getQuests = currentDate =>
-  firestore
+export const getQuests = async (currentDate, callback) => {
+  await firestore
     .collection(`quests`)
     .where('startDate', '==', currentDate)
-    .get()
-    .then(
-      snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
+    .onSnapshot(
+      async snapshot => {
+        if (snapshot.empty) {
+          callback(null)
+        } else {
+          const quests = getDataFromSnapshotQuery(snapshot)
+          await Promise.all(quests
+            .map(async quests => {
+              return {
+                ...quests,
+                members: await Promise.all(await quests.members.map(async (member) => {
+                  const { nickName: nickname, bio, color, level } = await getUser(member.uid)
+                  const avatarUrl = await getAvatar(member.uid)
+                  return { ...member, nickname, bio, color, level, avatarUrl }
+                }))
+              }
+            })).then(res => callback(res))
+        }
+      }
     )
+}
+
+export const getQuest = async questId => {
+  let quest = await firestore
+    .collection(`quests`)
+    .doc(`${questId}`)
+    .get()
+    .then(returnDocOrNull)
+  return quest
+}
+
+export const setQuestColor = async (questId, memberUID, scanner) => {
+  console.log('setQuestColor', questId, memberUID, scanner)
+  await firestore.collection(`quests`).doc(questId).update({
+    colors: firebase.firestore.FieldValue.arrayUnion({
+      ...scanner,
+      memberUID,
+      createdAt: firebase.firestore.Timestamp.now()
+    })
+  })
+}
