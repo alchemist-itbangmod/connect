@@ -4,6 +4,7 @@ import { Avatar, Button, Input, message, Modal } from 'antd'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
 
+import { actions } from '../../redux/modules/home'
 import ConnectAvatar from '../Core/Avatar'
 import { capitalizeFirstLetter } from '../../libs/capitalize-first-letter'
 import UploadAvatar from './UploadAvatar'
@@ -74,6 +75,7 @@ class Profile extends React.Component {
             ...R.pick(['stdID'], this.state),
             level: getYear(year)
           })
+          this.props.toggleEdit()
         }
       })
     }
@@ -138,17 +140,17 @@ class Profile extends React.Component {
               value={this.state.nickName}
             />
             <Input.TextArea
-              className="mb-1"
+              className="mb-3"
               placeholder="Bio"
               rows={4}
               onChange={e => this.setField('bio', e.target.value)}
               value={this.state.bio}
             />
             <Button
-              onClick={() => this.handleUpdateProfile()}
+              onClick={() => this.handleUpdateProfile(true)}
               loading={this.state.loading}
             >
-              แก้ไขข้อมูลส่วนตัว
+              บันทึกข้อมูลส่วนตัว
             </Button>
           </React.Fragment>
         )}
@@ -164,6 +166,8 @@ export default R.compose(
       isEdit: state.home.isEdit,
       userInfo: state.user.userInfo
     }),
-    null
+    {
+      toggleEdit: actions.toggleEdit
+    }
   )
 )(Profile)

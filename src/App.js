@@ -153,7 +153,7 @@ class App extends React.Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/identify" component={Identify} />
               <Route exact path="/" component={Home} />
-              {/* <Route exact path="/daily-hunt" component={DailyHunt} /> */}
+              <Route exact path="/daily-hunt" component={DailyHunt} />
               <Route exact path="/add" component={Add} />
               <Route exact path="/friends" component={Friends} />
               <Route component={NotFound} />
