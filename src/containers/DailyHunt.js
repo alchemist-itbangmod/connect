@@ -181,7 +181,6 @@ class DailyHunt extends React.Component {
     if (otp) {
       this.setState({ otp })
       message.success('แสกนสำเร็จ กรุณากดยืนยันรหัสลับ!')
-
     }
   }
 
