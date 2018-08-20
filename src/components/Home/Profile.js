@@ -6,7 +6,6 @@ import * as R from 'ramda'
 
 import { actions } from '../../redux/modules/home'
 import ConnectAvatar from '../Core/Avatar'
-import { capitalizeFirstLetter } from '../../libs/capitalize-first-letter'
 import UploadAvatar from './UploadAvatar'
 import { setUser } from '../../firebase/data'
 
@@ -115,8 +114,7 @@ class Profile extends React.Component {
             <h2 className="my-1">{nickName || '-'}</h2>
             <p className="small mb-0 mt-2">{`รหัสนักศึกษา: ${stdID || '-'}`}</p>
             <p className="mb-2">
-              {`${name ? capitalizeFirstLetter(name) : '-'}, ชั้นปี: ${level ||
-                '-'}, `}
+              {`${name || '-'}, ชั้นปี: ${level || '-'}, `}
               <b>{colorCode}</b>
             </p>
             <p className="small mb-2">{bio}</p>

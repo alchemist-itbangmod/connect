@@ -4,7 +4,6 @@ import { Avatar, Button } from 'antd'
 import { connect } from 'react-redux'
 import { Router } from 'react-router'
 
-import { capitalizeFirstLetter } from '../libs/capitalize-first-letter'
 import Layout from '../components/Core/Layout'
 import Section from '../components/Core/Section'
 import ConnectAvatar from '../components/Core/Avatar'
@@ -33,7 +32,7 @@ class Friends extends React.Component {
           })
         } else {
           this.setState({
-            friends: [{isLoad: false}]
+            friends: [{ isLoad: false }]
           })
         }
       }
@@ -58,45 +57,45 @@ class Friends extends React.Component {
           </div>
         </Section>
         <section className="friend-list">
-          {
-            friends && friends.length === 0 ? <LoadingSection /> : friends.length > 0 && friends[0].isLoad === false ?
-            <Section className='text-center py-4'>
-              <h2 className='mt-3 mb-2'>ยังไม่มีรายชื่อ</h2> <br />
-              <Button type="primary" size='large' onClick={this.toAddPage}>
+          {friends && friends.length === 0 ? (
+            <LoadingSection />
+          ) : friends.length > 0 && friends[0].isLoad === false ? (
+            <Section className="text-center py-4">
+              <h2 className="mt-3 mb-2">ยังไม่มีรายชื่อ</h2> <br />
+              <Button type="primary" size="large" onClick={this.toAddPage}>
                 ไปแสกนเร็ว !
               </Button>
-            </Section> : (
-              <React.Fragment>
-                {friends.map((friend, index) => (
-                  <Section id="friend" key={index}>
-                    <FriendItem className="container position-relative d-flex align-items-center">
-                      <div>
-                        {!friend.avatarUrl ? (
-                          <Avatar size={76} icon="user" src={friend.avatarUrl} />
-                        ) : (
-                          <ConnectAvatar
-                            size={76}
-                            avatarUrl={friend.avatarUrl}
-                            color={getThemeByColor(friend.color).primaryColor}
-                          />
-                        )}
-                      </div>
-                      <div className="info ml-2">
-                        <h4 className="my-0">{friend.nickName || '-'}</h4>
-                        <p className="small mb-0">
-                          {`${
-                            friend.name ? capitalizeFirstLetter(friend.name) : '-'
-                          } / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
-                        </p>
-                        <p className="small m-0">{`"${friend.bio ||
-                          'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
-                      </div>
-                    </FriendItem>
-                  </Section>
-                ))}
-              </React.Fragment>
-            )
-          }
+            </Section>
+          ) : (
+            <React.Fragment>
+              {friends.map((friend, index) => (
+                <Section id="friend" key={index}>
+                  <FriendItem className="container position-relative d-flex align-items-center">
+                    <div>
+                      {!friend.avatarUrl ? (
+                        <Avatar size={76} icon="user" src={friend.avatarUrl} />
+                      ) : (
+                        <ConnectAvatar
+                          size={76}
+                          avatarUrl={friend.avatarUrl}
+                          color={getThemeByColor(friend.color).primaryColor}
+                        />
+                      )}
+                    </div>
+                    <div className="info ml-2">
+                      <h4 className="my-0">{friend.nickName || '-'}</h4>
+                      <p className="small mb-0">
+                        {`${friend.name || '-'} / ชั้นปี: ${friend.level ||
+                          'ไม่ระบุ'}`}
+                      </p>
+                      <p className="small m-0">{`"${friend.bio ||
+                        'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
+                    </div>
+                  </FriendItem>
+                </Section>
+              ))}
+            </React.Fragment>
+          )}
         </section>
       </Layout>
     )
