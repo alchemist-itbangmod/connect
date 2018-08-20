@@ -27,6 +27,10 @@ class Friends extends React.Component {
           this.setState({
             friends
           })
+        } else {
+          this.setState({
+            friends: [{isLoad: false}]
+          })
         }
       }
     })
@@ -37,6 +41,7 @@ class Friends extends React.Component {
   }
 
   render() {
+    const { friends } = this.state
     return (
       <Layout>
         <Section id="mode">
@@ -49,37 +54,44 @@ class Friends extends React.Component {
           </div>
         </Section>
         <section className="friend-list">
-          {this.state.friends.length > 0 ? (
-            <React.Fragment>
-              {this.state.friends.map((friend, index) => (
-                <Section id="friend" key={index}>
-                  <FriendItem className="container position-relative d-flex align-items-center">
-                    <div>
-                      {!friend.avatarUrl ? (
-                        <Avatar size={76} icon="user" src={friend.avatarUrl} />
-                      ) : (
-                        <ConnectAvatar
-                          size={76}
-                          avatarUrl={friend.avatarUrl}
-                          color={getThemeByColor(friend.color).primaryColor}
-                        />
-                      )}
-                    </div>
-                    <div className="info ml-2">
-                      <h4 className="my-0">{friend.nickName || '-'}</h4>
-                      <p className="small mb-0">
-                        {`${
-                          friend.name ? capitalizeFirstLetter(friend.name) : '-'
-                        } / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
-                      </p>
-                      <p className="small m-0">{`"${friend.bio ||
-                        'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
-                    </div>
-                  </FriendItem>
-                </Section>
-              ))}
-            </React.Fragment>
-          ) : <LoadingSection />
+          {
+            friends && friends.length === 0 ? <LoadingSection /> : friends.length > 0 && friends[0].isLoad === false ?
+            <Section className='text-center py-4'>
+              <h2 className='mt-3 mb-2'>ยังไม่มีรายชื่อ</h2> <br />
+              <Button type="primary" size='large' onClick={this.toAddPage}>
+                ไปแสกนเร็ว !
+              </Button>
+            </Section> : (
+              <React.Fragment>
+                {friends.map((friend, index) => (
+                  <Section id="friend" key={index}>
+                    <FriendItem className="container position-relative d-flex align-items-center">
+                      <div>
+                        {!friend.avatarUrl ? (
+                          <Avatar size={76} icon="user" src={friend.avatarUrl} />
+                        ) : (
+                          <ConnectAvatar
+                            size={76}
+                            avatarUrl={friend.avatarUrl}
+                            color={getThemeByColor(friend.color).primaryColor}
+                          />
+                        )}
+                      </div>
+                      <div className="info ml-2">
+                        <h4 className="my-0">{friend.nickName || '-'}</h4>
+                        <p className="small mb-0">
+                          {`${
+                            friend.name ? capitalizeFirstLetter(friend.name) : '-'
+                          } / ชั้นปี: ${friend.level || 'ไม่ระบุ'}`}
+                        </p>
+                        <p className="small m-0">{`"${friend.bio ||
+                          'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
+                      </div>
+                    </FriendItem>
+                  </Section>
+                ))}
+              </React.Fragment>
+            )
           }
         </section>
       </Layout>
