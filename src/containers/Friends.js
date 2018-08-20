@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Avatar } from 'antd'
 import { connect } from 'react-redux'
 
@@ -9,6 +10,11 @@ import ConnectAvatar from '../components/Core/Avatar'
 import { getRealtimeFriends } from '../firebase/data'
 import { getThemeByColor } from '../App'
 import { LoadingSection } from '../components/Core/Loading'
+
+const FriendItem = styled.div`
+  overflow: hidden;
+`
+
 class Friends extends React.Component {
   state = {
     friends: []
@@ -47,7 +53,7 @@ class Friends extends React.Component {
             <React.Fragment>
               {this.state.friends.map((friend, index) => (
                 <Section id="friend" key={index}>
-                  <div className="container position-relative d-flex align-items-center">
+                  <FriendItem className="container position-relative d-flex align-items-center">
                     <div>
                       {!friend.avatarUrl ? (
                         <Avatar size={76} icon="user" src={friend.avatarUrl} />
@@ -69,7 +75,7 @@ class Friends extends React.Component {
                       <p className="small m-0">{`"${friend.bio ||
                         'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
                     </div>
-                  </div>
+                  </FriendItem>
                 </Section>
               ))}
             </React.Fragment>

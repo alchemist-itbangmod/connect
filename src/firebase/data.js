@@ -67,7 +67,7 @@ export const getFriends = async uid => {
     .where('userUID', '==', uid)
     .get()
     .then(
-      snapshot => (snapshot.empty ? null : getDataFromSnapshotQuery(snapshot))
+      snapshot => (snapshot.empty ? [] : getDataFromSnapshotQuery(snapshot))
     )
 
   const friendList = await Promise.all(
