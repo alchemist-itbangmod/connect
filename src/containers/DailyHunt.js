@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import moment from 'moment'
 import firebase from 'firebase/app'
-import { Avatar, Collapse, Icon, Modal as DefaultModal } from 'antd'
+import { message, Avatar, Collapse, Icon, Modal as DefaultModal } from 'antd'
 import * as R from 'ramda'
 
 import { getThemeByColor } from '../App'
@@ -171,6 +171,7 @@ class DailyHunt extends React.Component {
   }
 
   submitOtp = () => {
+    message.loading('กำลังถอดรหัสลับ...')
     const { questId, otp } = this.state
     const { userInfo: { uid: userUID, color } } = this.props
     addQuestMember(questId, otp, { userUID, color })

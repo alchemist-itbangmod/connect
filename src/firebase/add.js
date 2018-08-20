@@ -60,17 +60,17 @@ export const addQuestMember = async (questId, otp, { userUID, color }) => {
       const { colors } = quest
       const checkColors = await colors.filter(scanner => scanner && scanner.color === color && scanner.memberUID === member.uid)
       if (checkColors.length > 0) {
-        message.error('Your color are already scan this member')
+        message.error('สีของคุณแสกนคนนี้ไปแล้ว T^T')
       } else {
         await setQuestColor(questId, member.uid, { userUID, color })
         generateAndSaveOtpToDB(member.uid)
-        message.success('Done! You have scanned!')
+        message.success('แสกนสำเร็จ!')
       }
     } else {
-      message.error('Wrong member!')
+      message.error('คนนี้ไม่ได้เป็นสมาชิกแก๊งนี้!')
     }
   } else {
-    message.error('no member with this otp')
+    message.error('ไม่มีสมาชิกที่ใช้ OTP นี้')
     failedAttempts += 1
     if (failedAttempts >= 3) {
       lock = true
