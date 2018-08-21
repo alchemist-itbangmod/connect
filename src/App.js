@@ -18,7 +18,11 @@ import Add from './containers/Add'
 import Friends from './containers/Friends'
 import Identify from './containers/Identify'
 
-import { setUserData, createOtpForUserIfNotExist } from './firebase/login'
+import {
+  setUserData,
+  createOtpForUserIfNotExist,
+  generateAndSaveOtpToDB
+} from './firebase/login'
 import { getUser, getRealtimeUser } from './firebase/data'
 
 import { actions as userActions } from './redux/modules/user'
@@ -115,7 +119,7 @@ class App extends React.Component {
   handleLoggedIn = async authUser => {
     const user = await getUser(authUser.uid)
     if (user !== null) {
-      await createOtpForUserIfNotExist(authUser)
+      await generateAndSaveOtpToDB(authUser.uid)
     } else {
       await setUserData(authUser)
       await createOtpForUserIfNotExist(authUser)

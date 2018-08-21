@@ -1,6 +1,12 @@
 import { message } from 'antd'
 
-import { queryUsers, getFriend, setFriend, getQuest, setQuestColor } from './data'
+import {
+  queryUsers,
+  getFriend,
+  setFriend,
+  getQuest,
+  setQuestColor
+} from './data'
 import { generateAndSaveOtpToDB } from './login'
 let failedAttempts = 0
 let remainingTime = 0
@@ -19,9 +25,9 @@ export const addFriendWithOTP = async (userUID, otp) => {
     const hasThisFriend = await getFriend(userUID, friend.uid)
 
     if (!hasThisFriend) {
-      setFriend(userUID, friend.uid)
-      generateAndSaveOtpToDB(friend.uid)
-      message.success('เรียบร้อย! คุณเพิ่มรายชื่อแล้ว!')
+      await setFriend(userUID, friend.uid)
+      await generateAndSaveOtpToDB(friend.uid)
+      await message.success('เรียบร้อย! คุณเพิ่มรายชื่อแล้ว!')
     } else {
       message.error('คุณมีรายชื่อนี้อยู่ในลิสของคุณอยู่แล้ว')
     }
@@ -52,13 +58,18 @@ export const addQuestMember = async (questId, otp, { userUID, color }) => {
   const members = await queryUsers(['otp', '==', otp])
 
   if (members.length > 0) {
-    const [ member ] = members
+    const [member] = members
     const quest = await getQuest(questId)
-    const checkMembers = await quest.members.filter(({uid}) => uid === member.uid)
+    const checkMembers = await quest.members.filter(
+      ({ uid }) => uid === member.uid
+    )
 
     if (checkMembers && checkMembers.length > 0) {
       const { colors } = quest
-      const checkColors = await colors.filter(scanner => scanner && scanner.color === color && scanner.memberUID === member.uid)
+      const checkColors = await colors.filter(
+        scanner =>
+          scanner && scanner.color === color && scanner.memberUID === member.uid
+      )
       if (checkColors.length > 0) {
         message.error('สีของคุณแสกนคนนี้ไปแล้ว T^T')
       } else {
