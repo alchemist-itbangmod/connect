@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Avatar, Button } from 'antd'
+import { Avatar, Button, Badge, Tooltip } from 'antd'
 import { connect } from 'react-redux'
 import { Router } from 'react-router'
 
@@ -50,8 +50,17 @@ class Friends extends React.Component {
         <Section id="mode">
           <div className="container position-relative">
             <div className="row">
-              <div className="col">
-                <h3 className="m-0 text-center">รายชื่อทั้งหมด</h3>
+              <div className="col text-left">
+                <h3 className="m-0">
+                  รายชื่อทั้งหมด{' '}
+                  <small>
+                    (
+                    {this.state.friends.length === 0
+                      ? '-'
+                      : this.state.friends.length}{' '}
+                    คน)
+                  </small>
+                </h3>
               </div>
             </div>
           </div>
