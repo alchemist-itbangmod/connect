@@ -209,9 +209,10 @@ class DailyHunt extends React.Component {
   }
 
   handleScan = otp => {
+    const { otp: otpState } = this.state
     if (otp) {
+      otp !== otpState && message.success('แสกนสำเร็จ กรุณากดยืนยันรหัสลับ!')
       this.setState({ otp })
-      message.success('แสกนสำเร็จ กรุณากดยืนยันรหัสลับ!')
     }
   }
 
