@@ -79,9 +79,11 @@ const StatusList = ({ value = {}, max }) => (
   </div>
 )
 
-const MemberList = ({ members }) => (
+const checkScan = (uid, userColor, colors) => colors.filter(({ memberUID, color }) => memberUID === uid && userColor === color)
+
+const MemberList = ({ members, colors, userColor }) => (
   <Fragment>
-    {members.map(({ nickname, color, bio, avatarUrl }, index) => (
+    {members.map(({ uid, nickname, color, bio, avatarUrl }, index) => (
       <Section key={`${nickname}-${index}`}>
         <div className="container">
           <div className="row">
@@ -102,7 +104,7 @@ const MemberList = ({ members }) => (
               )}
             </div>
             <div className="col-8 pl-0">
-              <Nickname className="my-0">{nickname || '-'}</Nickname>
+              <Nickname isScan={!(checkScan(uid, userColor, colors).length === 0)} className="my-0">{nickname || '-'}</Nickname>
               <p className="small m-0">{`"${bio ||
                 'มาตามล่าหารหัสลับกันเถอะ!'}"`}</p>
             </div>
@@ -113,7 +115,7 @@ const MemberList = ({ members }) => (
   </Fragment>
 )
 
-const QuestList = ({ quests = [], handleCamera }) => (
+const QuestList = ({ userColor, quests = [], handleCamera }) => (
   <Fragment>
     {quests && quests.length === 0 ? (
       <LoadingSection />
@@ -150,7 +152,7 @@ const QuestList = ({ quests = [], handleCamera }) => (
               </div>
             </div>
             <div className="info text-center pt-3">
-              <MemberList members={members} />
+              <MemberList members={members} colors={colors} userColor={userColor} />
             </div>
           </Panel>
         </Collapse>
@@ -207,9 +209,10 @@ class DailyHunt extends React.Component {
   }
 
   handleScan = otp => {
+    const { otp: otpState } = this.state
     if (otp) {
+      otp !== otpState && message.success('แสกนสำเร็จ กรุณากดยืนยันรหัสลับ!')
       this.setState({ otp })
-      message.success('แสกนสำเร็จ กรุณากดยืนยันรหัสลับ!')
     }
   }
 
@@ -238,7 +241,7 @@ class DailyHunt extends React.Component {
             </div>
           </div>
         </Section>
-        <QuestList handleCamera={this.handleCamera} quests={quests} />
+        <QuestList handleCamera={this.handleCamera} quests={quests} userColor={this.props.userInfo.color} />
         <Modal
           visible={this.state.visible}
           onCancel={this.handleCancel}

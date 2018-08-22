@@ -20,8 +20,9 @@ class Add extends React.Component {
   }
 
   handleScan = otp => {
+    const { otp: otpState } = this.state
     if (otp !== null) {
-      message.success('ได้รหัสลับแล้ว กรุณากดปุ่ม `ยืนยันรหัสลับ` ด้านบน!')
+      otp !== otpState && message.success('ได้รหัสลับแล้ว กรุณากดปุ่ม `ยืนยันรหัสลับ` ด้านบน!')
       this.setState({ otp })
     }
   }
